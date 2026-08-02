@@ -75,3 +75,24 @@ OR 1=1;
 <img width="1280" height="656" alt="Screenshot 2026-08-01 at 9 43 46 AM" src="https://github.com/user-attachments/assets/349280d8-497d-4450-b508-e963418a6bd6" />
 
 
+# 🛡️ Mitigation
+
+To prevent SQL Injection vulnerabilities:
+
+- Use **parameterized queries (prepared statements)** instead of concatenating user input into SQL statements.
+- Validate user input using **allow-list validation** where appropriate.
+- Apply the **principle of least privilege** to database accounts.
+- Return **generic error messages** to users while logging detailed errors on the server.
+- Use **ORM frameworks** that generate parameterized queries when used correctly.
+- Deploy a **Web Application Firewall (WAF)** as an additional layer of defense.
+
+---
+
+# 💡 Lessons Learned
+
+- User-controlled input should never be trusted.
+- SQL Injection occurs when application input is interpreted as SQL code.
+- Prepared statements are the most effective defense against SQL Injection.
+- Burp Suite is an effective tool for identifying and testing injection points.
+
+---
