@@ -6,7 +6,7 @@ Below is a detailed explanation of each step for the **PortSwigger Web Security
 
 ## Objective
 
-Your goal is to:
+The goal is to:
 
 1. Determine the number of columns returned by the original query.
 2. Identify which columns support text data.
