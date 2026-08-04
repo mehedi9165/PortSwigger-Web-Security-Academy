@@ -59,16 +59,19 @@ SELECT
 
 ### Explanation
 
-- `UNION` combines the original query with your injected query.
+- `UNION` combines the original query with the injected query.
 - `'abc'` is returned in the first column.
 - `'def'` is returned in the second column.
 
-If **abc** and **def** appear on the page, you have confirmed:
+If **abc** and **def** appear on the page, it has confirmed:
 
 - The original query returns **2 columns**.
 - Both columns accept **text** values.
 
 ---
+
+<img width="1277" height="771" alt="Screenshot 2026-08-04 at 2 07 19 PM" src="https://github.com/user-attachments/assets/8e780f2f-a386-4ae9-a585-be32a2934d2b" />
+
 
 # Step 3: Retrieve All Table Names
 
@@ -99,6 +102,8 @@ FROM information_schema.tables
 | `information_schema.tables` | System view containing table metadata. |
 
 ---
+
+<img width="1277" height="765" alt="Screenshot 2026-08-04 at 2 12 07 PM" src="https://github.com/user-attachments/assets/bad12393-de53-4e6e-bc52-4444e5cafb06" />
 
 # Step 4: Retrieve the Column Names
 
@@ -135,6 +140,9 @@ returns only the columns belonging to that table.
 
 ---
 
+<img width="1278" height="738" alt="Screenshot 2026-08-04 at 2 14 02 PM" src="https://github.com/user-attachments/assets/293ba57e-88fd-496b-9fad-9e8770ff27cb" />
+
+
 # Step 5: Retrieve the Credentials
 
 Replace the placeholders with the discovered names:
@@ -153,6 +161,9 @@ password_jqnm
 FROM users_xkqrmn
 ```
 
+<img width="1277" height="738" alt="Screenshot 2026-08-04 at 2 15 25 PM" src="https://github.com/user-attachments/assets/cd6dd42c-611c-47ab-98d9-aef96c34ff06" />
+
+
 # Step 6: Log In
 
 Locate the administrator row:
@@ -168,6 +179,9 @@ p8fd3x7q
 Go to **My Account** and log in with these credentials to complete the lab.
 
 ---
+
+<img width="1277" height="725" alt="Screenshot 2026-08-04 at 2 15 38 PM" src="https://github.com/user-attachments/assets/47dce59a-2edc-4ae8-b16f-1e2f14ad4a34" />
+
 
 # Why `NULL`?
 
@@ -207,42 +221,6 @@ The most useful ones are:
 These views allow to discover the database schema before retrieving actual data.
 
 ---
-
-# Complete Workflow
-
-```
-Intercept Request
-        │
-        ▼
-Test UNION
-'abc','def'
-        │
-        ▼
-2 columns confirmed
-        │
-        ▼
-Both columns accept text
-        │
-        ▼
-Enumerate tables
-information_schema.tables
-        │
-        ▼
-Find users table
-        │
-        ▼
-Enumerate columns
-information_schema.columns
-        │
-        ▼
-Find username/password columns
-        │
-        ▼
-Retrieve credentials
-        │
-        ▼
-Log in as administrator
-```
 
 ## Key Difference: Oracle vs. Microsoft SQL Server
 
