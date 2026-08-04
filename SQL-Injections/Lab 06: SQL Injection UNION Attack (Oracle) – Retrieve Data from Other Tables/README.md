@@ -166,3 +166,53 @@ If successful, the lab is solved.
 ---
 <img width="1279" height="723" alt="Screenshot 2026-08-04 at 3 38 30 PM" src="https://github.com/user-attachments/assets/e6fa3ff0-e7a6-4407-89b3-07c05c20e0ca" />
 
+## 🛡️ Mitigation
+
+To prevent **UNION-based SQL Injection vulnerabilities in Oracle databases**:
+
+* Use **parameterized queries (prepared statements)** instead of concatenating user input into SQL statements.
+* Avoid building **dynamic SQL queries** with untrusted input.
+* Implement **allow-list input validation** for parameters such as category names, IDs, or predefined values.
+* Apply the **Principle of Least Privilege (PoLP)** by granting the application database account only the permissions it requires.
+* Restrict unnecessary access to Oracle metadata views such as `ALL_TABLES`, `ALL_TAB_COLUMNS`, and other system objects.
+* Return **generic error messages** to users and avoid exposing Oracle error details (for example, `ORA-` messages).
+* Use **stored procedures securely**, ensuring that they also use parameterized inputs and do not construct dynamic SQL unsafely.
+* Keep the **application, Oracle database, drivers, and dependencies** updated with the latest security patches.
+* Deploy a **Web Application Firewall (WAF)** as an additional security layer to help detect and block SQL Injection attempts.
+* Conduct regular **secure code reviews, vulnerability assessments, and authorized penetration testing**.
+
+---
+
+## 💡 Lessons Learned
+
+* User-controlled input should never be trusted.
+* Oracle-specific objects such as `DUAL`, `ALL_TABLES`, and `ALL_TAB_COLUMNS` can be abused during schema enumeration if proper controls are not in place.
+* **UNION-based SQL Injection** allows attackers to retrieve data from unintended database tables.
+* Determining the correct number of columns and compatible data types is essential for successful UNION attacks.
+* Metadata exposure can assist attackers in identifying tables and columns containing sensitive information.
+* Parameterized queries are the most effective defense against SQL Injection.
+* Verbose database errors can reveal information about the database type and help attackers refine their payloads.
+* Applying least-privilege permissions significantly reduces the impact of SQL Injection vulnerabilities.
+* Burp Suite is an effective tool for identifying and testing SQL Injection vulnerabilities in a controlled and authorized environment.
+
+---
+
+## 🔒 Secure Coding Recommendation
+
+**Vulnerable Approach:**
+
+```java
+String query =
+"SELECT * FROM products WHERE category='" + category + "'";
+```
+
+**Secure Approach:**
+
+```java
+String query =
+"SELECT * FROM products WHERE category=?";
+PreparedStatement ps = connection.prepareStatement(query);
+ps.setString(1, category);
+```
+
+Using parameterized queries ensures that user input is treated as data rather than executable SQL code.
