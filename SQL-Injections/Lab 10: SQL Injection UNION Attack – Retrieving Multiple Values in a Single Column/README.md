@@ -46,6 +46,8 @@ SELECT
 NULL,
 'abc'
 ```
+<img width="1279" height="737" alt="Screenshot 2026-08-05 at 5 50 49 PM" src="https://github.com/user-attachments/assets/c44bbea4-6678-4100-ae00-4d44a423a2b4" />
+
 
 ### Explanation
 
@@ -97,6 +99,9 @@ FROM users
 ```
 
 ---
+
+<img width="1280" height="718" alt="Screenshot 2026-08-05 at 5 49 41 PM" src="https://github.com/user-attachments/assets/baae8c35-2c22-4a70-a2bd-abf069a49393" />
+
 
 # Understanding the Payload
 
@@ -258,3 +263,7 @@ returns:
 | 2 | administrator~secret123 |
 
 This matches the original query's structure and data types.
+
+<img width="1276" height="727" alt="Screenshot 2026-08-05 at 5 53 33 PM" src="https://github.com/user-attachments/assets/bb8e77b0-e3f1-4ff4-b5ce-c47c45e87e23" />
+
+
