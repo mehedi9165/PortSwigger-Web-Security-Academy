@@ -266,4 +266,35 @@ This matches the original query's structure and data types.
 
 <img width="1276" height="727" alt="Screenshot 2026-08-05 at 5 53 33 PM" src="https://github.com/user-attachments/assets/bb8e77b0-e3f1-4ff4-b5ce-c47c45e87e23" />
 
+## 🛡️ Mitigation
+
+To prevent **UNION-based SQL Injection vulnerabilities involving the retrieval of multiple values through a single text column**:
+
+* Use **parameterized queries (prepared statements)** instead of concatenating user input into SQL statements. This ensures user input is treated as data rather than executable SQL, preventing attackers from injecting `UNION SELECT` statements.
+* Never build SQL queries by directly concatenating user-supplied input such as category names, product IDs, or search parameters. Use parameter binding provided by the database driver or framework.
+* Validate input using an **allow-list** for parameters that should only accept predefined values (for example, valid product categories). Reject unexpected or malformed input before it reaches the database.
+* Do not expose detailed database error messages (such as Oracle `ORA-01789`, PostgreSQL data type errors, or SQL Server conversion errors). Return generic error messages to users while logging detailed errors securely for administrators.
+* Apply the **Principle of Least Privilege (PoLP)** by granting the application's database account only the minimum permissions required. The web application should not have unnecessary access to sensitive tables such as `users`, administrative data, or system metadata.
+* Restrict access to database metadata and system catalog views (such as Oracle `ALL_TABLES`, PostgreSQL `information_schema`, or SQL Server catalog views) unless explicitly required by the application.
+* Store user passwords using strong, one-way password hashing algorithms (such as **Argon2**, **bcrypt**, or **PBKDF2**) instead of plaintext. Even if a SQL Injection vulnerability is exploited, attackers should not be able to recover usable passwords.
+* Use secure stored procedures where appropriate, ensuring they also use parameterized inputs and avoid unsafe dynamic SQL execution.
+* Deploy a **Web Application Firewall (WAF)** to help detect and block common SQL Injection payloads, including `UNION SELECT`, string concatenation operators (`||`, `CONCAT()`), SQL comments (`--`, `/* */`), and other suspicious SQL patterns.
+* Keep the web application, database server, drivers, frameworks, and dependencies updated with the latest security patches to reduce exposure to known vulnerabilities.
+* Perform regular secure code reviews, vulnerability assessments, and authorized penetration testing to identify and remediate SQL Injection vulnerabilities before deployment.
+
+---
+
+## 💡 Lessons Learned
+
+* A successful **UNION-based SQL Injection** requires the injected query to return the **same number of columns** as the application's original SQL query.
+* Before retrieving sensitive information, an attacker typically determines **which columns accept text data**, because textual information such as usernames and passwords can only be displayed in compatible columns.
+* When only **one text column** is available, multiple database values can be combined into a single output using the database's **string concatenation operator** (for example, `||` in Oracle and PostgreSQL or `CONCAT()` in MySQL).
+* Separators such as the tilde (`~`) are commonly used when concatenating values to clearly distinguish one field from another (for example, `administrator~secret123`).
+* The SQL `NULL` value is frequently used as a placeholder for columns that do not need to display data because it is compatible with most database data types and minimizes type mismatch errors.
+* Once the correct column count and text-capable column have been identified, attackers can retrieve multiple pieces of sensitive information through a single visible column using `UNION SELECT`.
+* Even when only one column is displayed by the application, improper query construction may still allow attackers to expose entire database records by concatenating multiple fields.
+* Parameterized queries prevent attackers from modifying the structure of SQL statements, making them the most effective defense against UNION-based SQL Injection.
+* Suppressing verbose database error messages and enforcing least-privilege database permissions significantly reduce information disclosure and limit the impact of successful SQL Injection attacks.
+* **Burp Suite Repeater** is an effective tool for testing and validating UNION-based SQL Injection payloads during authorized security assessments, allowing testers to observe how different payloads affect application responses.
+* Regular security testing, secure coding practices, and defense-in-depth controls are essential to prevent attackers from progressing from SQL Injection discovery to the extraction of sensitive credentials and other confidential database information.
 
