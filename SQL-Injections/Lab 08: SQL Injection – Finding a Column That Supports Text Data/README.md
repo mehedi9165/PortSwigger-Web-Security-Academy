@@ -48,6 +48,8 @@ If the page loads without an SQL error, you've confirmed that the query returns�
 
 ---
 
+<img width="1276" height="716" alt="Screenshot 2026-08-05 at 12 24 39 PM" src="https://github.com/user-attachments/assets/a458a04f-7cf1-4625-882e-48688a004681" />
+
 # Step 3: Test the First Column
 
 Replace the first `NULL` with the random string supplied by the lab (for example, `abcdef`):
@@ -79,6 +81,9 @@ NULL
 
 ---
 
+<img width="1276" height="685" alt="Screenshot 2026-08-05 at 12 26 18 PM" src="https://github.com/user-attachments/assets/4295cd2b-b89e-44ae-8db6-8c0583f374b1" />
+
+
 # Step 4: Test the Second Column
 
 ```sql
@@ -104,6 +109,11 @@ Otherwise:
 - Continue testing.
 
 ---
+
+<img width="1275" height="687" alt="Screenshot 2026-08-05 at 12 27 23 PM" src="https://github.com/user-attachments/assets/3dce01ad-14ff-4444-ad2c-92bd4f55aaff" />
+
+<img width="1280" height="653" alt="Screenshot 2026-08-05 at 12 17 17 PM" src="https://github.com/user-attachments/assets/b3655c97-94aa-4084-968a-1e1870bb25a6" />
+
 
 # Step 5: Test the Third Column
 
