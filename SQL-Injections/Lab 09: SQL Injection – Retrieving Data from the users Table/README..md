@@ -47,6 +47,8 @@ SELECT
 'def'
 ```
 
+
+
 ### Why does this work?
 
 Suppose the original query returns:
@@ -104,6 +106,9 @@ FROM users
 ```
 
 ---
+
+<img width="1276" height="685" alt="Screenshot 2026-08-05 at 12 56 06 PM" src="https://github.com/user-attachments/assets/dcd631e6-5fd1-435b-ace3-d373f074ba08" />
+
 
 # How Does This Work?
 
@@ -176,3 +181,7 @@ In this lab:
 | `description` (text) | `password` (text) |
 
 Everything matches, so Oracle (or the underlying database) can combine the results.
+
+<img width="1274" height="724" alt="Screenshot 2026-08-05 at 12 53 16 PM" src="https://github.com/user-attachments/assets/247b91ac-5344-4ed3-8931-be378922638e" />
+
+
