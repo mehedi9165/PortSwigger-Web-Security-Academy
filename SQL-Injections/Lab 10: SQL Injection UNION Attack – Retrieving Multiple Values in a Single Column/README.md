@@ -1,6 +1,6 @@
 ## Objective
 
-Your goal is to:
+Goal is to:
 
 1. Determine the number of columns returned by the original query.
 2. Identify which column accepts text data.
