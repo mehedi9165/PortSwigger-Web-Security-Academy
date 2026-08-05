@@ -199,3 +199,31 @@ You now know the original query returns **2 columns**.
 
 That's why `NULL` is the standard choice during this discovery phase.
 
+## 🛡️ Mitigation
+
+To prevent **UNION-based SQL Injection vulnerabilities related to determining the number of columns returned by a query**:
+
+* **Use parameterized queries (prepared statements)** instead of concatenating user input into SQL statements. This prevents attackers from injecting `UNION SELECT` payloads regardless of the number of columns.
+* **Avoid constructing dynamic SQL queries** using untrusted input. Build SQL statements with fixed query structures whenever possible.
+* **Implement allow-list input validation** for parameters such as product categories, IDs, and predefined values. Reject unexpected input before it reaches the database.
+* **Do not expose detailed database error messages** (such as `ORA-01789`, `PostgreSQL: each UNION query must have the same number of columns`, or SQL Server error messages). Return generic error pages while logging detailed errors securely on the server.
+* **Apply the Principle of Least Privilege (PoLP)** by granting the application's database account only the minimum permissions required. This limits the impact even if SQL injection occurs.
+* **Restrict access to sensitive database objects and metadata**, such as Oracle's `ALL_TABLES`, `ALL_TAB_COLUMNS`, PostgreSQL's `information_schema`, or SQL Server's system catalog views, unless explicitly required by the application.
+* **Use secure stored procedures** where appropriate, ensuring they also use parameterized inputs and avoid unsafe dynamic SQL execution.
+* **Deploy a Web Application Firewall (WAF)** to help detect and block common SQL Injection payloads, including `UNION SELECT`, SQL comments (`--`), and other suspicious patterns.
+* **Keep the application, database server, drivers, frameworks, and dependencies updated** with the latest security patches to reduce exposure to known vulnerabilities.
+* **Perform regular secure code reviews, vulnerability assessments, and authorized penetration testing** to identify and remediate SQL Injection vulnerabilities before deployment.
+
+---
+
+# 💡 Lessons Learned
+
+* A successful **UNION-based SQL Injection** requires the injected query to return **the same number of columns** as the original SQL query.
+* Attackers often determine the correct column count by incrementally testing `UNION SELECT NULL`, `UNION SELECT NULL, NULL`, `UNION SELECT NULL, NULL, NULL`, and so on until the database accepts the query.
+* The SQL `NULL` value is commonly used because it is compatible with most database data types and minimizes type mismatch errors during enumeration.
+* Database error messages can reveal valuable information, such as the required number of columns, helping attackers refine their payloads.
+* After identifying the correct number of columns, attackers can proceed to identify which columns accept text data and eventually retrieve sensitive information using `UNION SELECT`.
+* Preventing SQL Injection at the source through **parameterized queries** is significantly more effective than attempting to filter malicious input.
+* Restricting database permissions and suppressing verbose error messages greatly reduces the attack surface and limits information disclosure.
+* **Burp Suite Repeater** is an effective tool for testing SQL Injection payloads in a controlled and authorized security assessment, allowing testers to observe how different payloads affect application responses.
+* Regular security testing and secure coding practices are essential to prevent attackers from exploiting SQL Injection vulnerabilities during the reconnaissance and enumeration phases.
