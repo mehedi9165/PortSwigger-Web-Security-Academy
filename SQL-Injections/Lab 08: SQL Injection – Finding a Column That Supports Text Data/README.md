@@ -187,3 +187,14 @@ NULL
 ```
 
 works because the second column is designed to store text.
+
+# Mitigation
+- Use parameterized queries (prepared statements) instead of concatenating user input into SQL queries.
+- Validate user input using allow-list validation and reject unexpected values.
+- Apply the principle of least privilege to database accounts to minimize the impact of successful attacks.
+- Return generic error messages to users while logging detailed errors securely on the server.
+- Avoid constructing dynamic SQL queries with untrusted input, including within stored procedures.
+- Keep the application, database, framework, and dependencies updated with security patches.
+- Deploy a Web Application Firewall (WAF) as an additional layer of protection against common SQL injection attacks.
+- Perform regular secure code reviews, vulnerability assessments, and penetration testing to identify and remediate SQL injection vulnerabilities.
+
