@@ -2,7 +2,7 @@
 
 Extract the administrator's password using only **True/False (Boolean)** responses.
 
-The application behaves like this:
+The application behaves like this: 
 
 - ✅ **Condition is TRUE** → "Welcome back" is shown.
 - ❌ **Condition is FALSE** → "Welcome back" disappears.
