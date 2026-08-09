@@ -510,7 +510,7 @@ z
 ---
 
 
-# 14. How to recognize the correct character
+# How to recognize the correct character
 
 Suppose Intruder produces:
 
@@ -548,7 +548,7 @@ was TRUE.
 
 ---
 
-# 15. Move to position 2
+# Move to position 2
 
 Change:
 
@@ -582,7 +582,7 @@ Position 2 = 7
 
 ---
 
-# 16. Continue
+# Continue
 
 You repeat:
 
