@@ -31,6 +31,9 @@ TrackingId=x'||pg_sleep(10)--
 
 ---
 
+<img width="1278" height="725" alt="Screenshot 2026-08-09 at 9 01 45 AM" src="https://github.com/user-attachments/assets/b5a9eb31-dde3-41ef-bd32-9caf6ce1c79f" />
+
+
 # Breaking Down the Payload
 
 ```sql
