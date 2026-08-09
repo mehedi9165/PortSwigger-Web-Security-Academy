@@ -200,3 +200,26 @@ TrackingId=x'||pg_sleep(10)--
 ```
 
 uses PostgreSQL's `pg_sleep(10)` function to intentionally delay query execution. If the application's response is delayed by roughly **10 seconds**, it indicates that the injected SQL was executed successfully. This is the basis of **time-based blind SQL injection**, where response timing—not page content or error messages—is used to infer whether injected SQL has been executed.
+
+
+## ⏱️ SQL Injection Time Delays
+
+| Database                 | Time-delay syntax                     |      Delay |
+| ------------------------ | ------------------------------------- | ---------: |
+| **Oracle**               | `dbms_pipe.receive_message(('a'),10)` | 10 seconds |
+| **Microsoft SQL Server** | `WAITFOR DELAY '0:0:10'`              | 10 seconds |
+| **PostgreSQL**           | `SELECT pg_sleep(10)`                 | 10 seconds |
+| **MySQL**                | `SELECT SLEEP(10)`                    | 10 seconds |
+
+
+### Quick reference
+
+| Database             | Function / Keyword            |
+| -------------------- | ----------------------------- |
+| Oracle               | `DBMS_PIPE.RECEIVE_MESSAGE()` |
+| Microsoft SQL Server | `WAITFOR DELAY`               |
+| PostgreSQL           | `pg_sleep()`                  |
+| MySQL                | `SLEEP()`                     |
+
+These are **unconditional delays**: they pause database execution regardless of whether a condition is true or false. In a blind SQL injection test, they can then be combined with conditional logic so that a delay occurs **only when a particular condition is true**.
+
