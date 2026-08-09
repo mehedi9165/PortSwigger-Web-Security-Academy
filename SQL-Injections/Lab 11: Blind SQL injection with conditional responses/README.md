@@ -512,3 +512,20 @@ Password:
 ```
 
 1. Log in to complete the lab.
+
+## 🛡️ Mitigation — Lab 11: Blind SQL Injection with Conditional Responses
+
+* **Use parameterized queries (prepared statements)** so user input cannot modify the SQL query structure.
+* **Never concatenate** user-controlled values such as cookies, search terms, or IDs directly into SQL statements.
+* Apply **allow-list input validation** where inputs have a known format or limited set of valid values.
+* Use **least-privilege database accounts** so the application cannot unnecessarily access sensitive tables such as `users`.
+* Store passwords using strong **one-way hashing** such as Argon2id, bcrypt, or PBKDF2 rather than plaintext.
+* Return **generic error messages** and avoid exposing database errors or query details.
+* Use **rate limiting and monitoring** to detect repeated automated TRUE/FALSE requests characteristic of blind SQL injection.
+* A **WAF** can provide additional defense-in-depth against common SQL injection patterns, but should not replace parameterized queries.
+* Perform regular **code reviews, vulnerability scanning, and authorized penetration testing**.
+
+### 💡 Key Lesson
+
+> **The primary defense against Boolean-based blind SQL injection is parameterized queries.** Even if an attacker sends TRUE/FALSE SQL conditions, the database treats the entire input as data rather than executable SQL.
+
