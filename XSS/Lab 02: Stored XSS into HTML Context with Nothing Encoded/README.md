@@ -26,6 +26,21 @@ Enter valid values for the other required fields and submit the comment.
 
 If the browser renders the heading as HTML, the application is accepting HTML without proper encoding.
 
+.....
+
+<img width="1280" height="657" alt="Screenshot 2026-09-13 at 9 26 54 PM" src="https://github.com/user-attachments/assets/dcf37a68-2807-4072-aa1e-23fd9e223a2b" />
+
+.....
+
+<img width="1277" height="655" alt="Screenshot 2026-09-13 at 9 27 22 PM" src="https://github.com/user-attachments/assets/3ec76300-8195-4dee-9ee8-9286a80c4761" />
+
+......
+
+<img width="1255" height="656" alt="Screenshot 2026-09-13 at 9 29 46 PM" src="https://github.com/user-attachments/assets/2fc8769c-45a0-4f1e-bc2c-f9e4e6408e5e" />
+....
+
+
+
 ### Step 3 — Inject XSS Payload
 
 Replace the test input with:
@@ -34,13 +49,15 @@ Replace the test input with:
 <script>alert(1)</script>
 ```
 
-Fill in the required:
 
-- **Name**
-- **Email**
-- **Website**
 
-Then click **Post comment**.
+......
+
+<img width="1279" height="651" alt="Screenshot 2026-09-13 at 9 30 58 PM" src="https://github.com/user-attachments/assets/bf2e01c4-8605-4b07-a75e-62e5251ef168" />
+
+....
+
+
 
 ### Step 4 — Trigger the Payload
 
@@ -55,6 +72,15 @@ A JavaScript alert displaying:
 ```
 
 should appear.
+
+...
+
+
+<img width="1277" height="656" alt="Screenshot 2026-09-13 at 9 31 15 PM" src="https://github.com/user-attachments/assets/edb61ddc-4f09-4d55-90fd-f3ae73b53b6c" />
+
+
+.....
+
 
 ### Step 5 — Confirm the Vulnerability
 
