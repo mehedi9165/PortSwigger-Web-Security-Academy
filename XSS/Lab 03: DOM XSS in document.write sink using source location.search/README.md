@@ -53,7 +53,11 @@ Click:
 
 The purpose of this step is to determine **where the application's output is placed in the HTML source**.
 
+
 ---
+<img width="1388" height="820" alt="Screenshot 2026-09-23 at 8 03 02 PM" src="https://github.com/user-attachments/assets/47f82c9f-9ed3-463c-8d77-e80017f80de1" />
+
+
 
 # 4. Step 2 — Inspect the HTML
 
@@ -85,6 +89,14 @@ HTML attribute context
 
 ---
 
+
+<img width="1327" height="753" alt="Screenshot 2026-09-23 at 8 05 04 PM" src="https://github.com/user-attachments/assets/5b21b0c7-098e-4feb-8472-f5de4a617911" />
+
+
+
+.....
+
+
 # 5. Step 3 — Identify the Injection Point
 
 The application effectively produces:
@@ -109,6 +121,14 @@ The goal is therefore to escape from the `src` attribute.
 
 ---
 
+
+
+<img width="1327" height="753" alt="Screenshot 2026-09-23 at 8 05 04 PM" src="https://github.com/user-attachments/assets/7782d647-fd36-4d8f-9d87-51f4c10d31fd" />
+
+
+....
+
+
 # 6. Step 4 — Break Out of the Attribute
 
 Use the following payload:
@@ -120,6 +140,15 @@ Use the following payload:
 Enter it into the search box and submit the search.
 
 ---
+
+
+
+
+<img width="1378" height="765" alt="Screenshot 2026-09-23 at 8 06 37 PM" src="https://github.com/user-attachments/assets/8a0eec45-bb87-468e-8ec9-e9e8810bef16" />
+
+....
+
+
 
 # 7. Step 5 — Understand the Payload
 
@@ -139,7 +168,7 @@ The original HTML:
 <img src="USER_INPUT">
 ```
 
-becomes conceptually:
+becomes:
 
 ```html
 <img src="">
@@ -159,9 +188,7 @@ This allows the attacker to start injecting additional HTML.
 
 ### `<svg>`
 
-The attacker introduces a new SVG element.
-
-The resulting structure is conceptually similar to:
+Introducing a new SVG element the resulting structure is similar to:
 
 ```html
 <img src=""><svg onload=alert(1)>
@@ -181,38 +208,10 @@ alert(1)
 
 ---
 
-# 8. Payload Execution Flow
-
-The attack can be visualized as:
-
-```
-User Input
-    │
-    ▼
-"><svg onload=alert(1)>
-    │
-    ▼
-Break out of src attribute
-    │
-    ▼
-Close the original IMG element
-    │
-    ▼
-Inject SVG element
-    │
-    ▼
-SVG loads
-    │
-    ▼
-onload event fires
-    │
-    ▼
-alert(1) executes
-```
 
 ---
 
-# 9. Step 6 — Confirm the Vulnerability
+# 8. Step 6 — Confirm the Vulnerability
 
 After submitting the payload:
 
@@ -226,21 +225,28 @@ the browser should display a JavaScript alert containing:
 1
 ```
 
-Example:
-
-```
-+----------------------+
-|          1           |
-|                      |
-|        [ OK ]        |
-+----------------------+
-```
 
 The alert confirms that attacker-controlled JavaScript was executed in the browser.
 
+
+......
+
+
+
+<img width="1460" height="856" alt="Screenshot 2026-09-23 at 8 07 09 PM" src="https://github.com/user-attachments/assets/f7fa40ed-0446-49b8-b53d-f09498942ef5" />
+
+
 ---
 
-# 10. What Happened Internally?
+
+
+<img width="1450" height="805" alt="Screenshot 2026-09-23 at 8 07 48 PM" src="https://github.com/user-attachments/assets/a5e8d3b0-22b3-41c2-a032-1c5904960a72" />
+
+
+......
+
+
+# 9. What Happened Internally?
 
 The application originally generates something similar to:
 
@@ -266,7 +272,7 @@ After supplying:
 "><svg onload=alert(1)>
 ```
 
-the resulting HTML can become conceptually:
+the resulting HTML can become:
 
 ```html
 <img src=""><svg onload=alert(1)>
@@ -276,7 +282,7 @@ The injected quotation mark escapes the original attribute, while the SVG elemen
 
 ---
 
-# 11. Why the Vulnerability Exists
+# 10. Why the Vulnerability Exists
 
 The root cause is **improper handling of untrusted data in an HTML attribute context**.
 
@@ -300,7 +306,7 @@ can change the structure of the HTML document.
 
 ---
 
-# 12. Impact
+# 11. Impact
 
 Depending on the application's functionality and the victim's privileges, Reflected XSS may allow an attacker to:
 
@@ -315,9 +321,9 @@ The actual impact depends on the application's architecture and available securi
 
 ---
 
-# 13. Defensive Measures
+# 12. Defensive Measures
 
-## 13.1 Context-Aware Output Encoding
+## 12.1 Context-Aware Output Encoding
 
 Because the input is placed inside an HTML attribute, the application should apply **HTML attribute encoding**.
 
@@ -337,7 +343,7 @@ The exact encoding strategy should match the output context.
 
 ---
 
-## 13.2 Avoid Direct HTML Construction
+## 12.2 Avoid Direct HTML Construction
 
 Avoid constructing HTML by concatenating untrusted input.
 
@@ -360,7 +366,7 @@ Even with safer APIs, developers should validate that the supplied value is appr
 
 ---
 
-## 13.3 Validate Input
+## 12.3 Validate Input
 
 Where appropriate, validate the expected format of the input.
 
@@ -370,7 +376,7 @@ Input validation should complement—not replace—proper output encoding.
 
 ---
 
-## 13.4 Content Security Policy
+## 12.4 Content Security Policy
 
 Implement a strong **Content Security Policy (CSP)** as an additional layer of defense.
 
@@ -384,7 +390,7 @@ CSP should be treated as defense in depth and should not replace correct output 
 
 ---
 
-## 13.5 Avoid Inline Event Handlers
+## 12.5 Avoid Inline Event Handlers
 
 Avoid inline JavaScript event handlers such as:
 
@@ -398,84 +404,4 @@ Use JavaScript event listeners instead.
 
 ---
 
-# 14. Remediation Summary
 
-| Issue | Recommended Defense |
-| --- | --- |
-| User input inserted into HTML attribute | Context-aware attribute encoding |
-| Untrusted HTML interpreted by browser | Encode output before rendering |
-| Dynamic HTML construction | Use safe DOM APIs |
-| Unexpected input characters | Appropriate input validation |
-| Inline event handlers | Avoid inline JavaScript |
-| Defense in depth | Implement CSP |
-
----
-
-# 15. Key Takeaway
-
-This lab demonstrates an important XSS concept:
-
-> **The exploitation technique depends on the context in which the input is inserted.**
-> 
-
-Here, the input is placed inside an `img` `src` attribute:
-
-```html
-<img src="USER_INPUT">
-```
-
-Therefore, the attacker's objective is first to **escape the attribute context** and then introduce executable HTML:
-
-```html
-"><svg onload=alert(1)>
-```
-
-The complete attack chain is:
-
-```
-User Input
-     ↓
-HTML Attribute Context
-     ↓
-"  → Escape Attribute
-     ↓
->  → Close IMG Tag
-     ↓
-<svg>  → Inject HTML Element
-     ↓
-onload  → Trigger Event
-     ↓
-alert(1)
-     ↓
-JavaScript Execution
-```
-
----
-
-# 16. Evidence
-
-**Test input:**
-
-```
-test123
-```
-
-**Observed HTML context:**
-
-```html
-<img src="test123">
-```
-
-**XSS payload:**
-
-```html
-"><svg onload=alert(1)>
-```
-
-**Expected result:**
-
-```
-JavaScript alert displaying: 1
-```
-
-**Vulnerability confirmed:** Yes — successful execution of `alert(1)` demonstrates Reflected XSS.
