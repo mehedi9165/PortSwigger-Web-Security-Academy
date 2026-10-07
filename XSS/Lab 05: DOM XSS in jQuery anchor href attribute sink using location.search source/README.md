@@ -9,7 +9,7 @@
 
 **Source:** `location.search`
 
-**Sink:**  <a id="backLink" href="/">Back</a> == $θ
+**Sink:**  `<a id="backLink" href="/">Back</a> == $θ`
 
 **Affected Page:** Submit Feedback
 
