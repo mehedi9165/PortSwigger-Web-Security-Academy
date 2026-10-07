@@ -9,7 +9,7 @@
 
 **Source:** `location.search`
 
-**Sink:** jQuery `$()` / `attr("href", ...)`
+**Sink:**  <a id="backLink" href="/">Back</a> == $θ
 
 **Affected Page:** Submit Feedback
 
@@ -89,6 +89,12 @@ Initially, the link should point to a normal URL/path.
 
 ---
 
+
+......
+
+
+
+
 # 5. Step 2 — Identify the Query Parameter
 
 Look at the URL in the browser's address bar.
@@ -129,6 +135,13 @@ Instead, we want to determine whether our input reaches the page's DOM.
 
 ---
 
+
+.....
+
+
+
+
+
 # 7. Step 4 — Inspect the Back Link
 
 Right-click the **Back** link and select:
@@ -167,6 +180,19 @@ href="/test123"
 
 ---
 
+
+
+......
+
+
+
+<img width="1300" height="894" alt="Screenshot 2026-10-06 at 12 56 55 PM" src="https://github.com/user-attachments/assets/f58dc2ad-70a7-4b67-8b69-4f7bece1d863" />
+
+
+
+.....
+
+
 # 8. Step 5 — Identify the DOM XSS Sink
 
 The lab description tells us that jQuery is used to modify the anchor's `href` attribute.
@@ -174,7 +200,7 @@ The lab description tells us that jQuery is used to modify the anchor's `href` a
 Conceptually, the application is doing something similar to:
 
 ```javascript
-$('a').attr('href', returnPath);
+<a id="backLink" href="/">Back</a> == $θ;
 ```
 
 The important point is that attacker-controlled data is being used to set the value of an HTML link's `href`.
@@ -223,6 +249,17 @@ This confirms that the attacker-controlled value has reached the vulnerable `hre
 
 ---
 
+
+
+......
+
+
+<img width="1301" height="889" alt="Screenshot 2026-10-06 at 12 59 48 PM" src="https://github.com/user-attachments/assets/1a626af8-f096-4024-b9ac-6d595a01f97e" />
+
+
+.....
+
+
 # 11. Step 8 — Click the Back Link
 
 Click:
@@ -242,6 +279,18 @@ A JavaScript alert should appear containing the page's accessible cookies.
 This confirms successful DOM-based XSS.
 
 ---
+
+
+
+......
+
+
+
+<img width="1302" height="895" alt="Screenshot 2026-10-06 at 1 00 14 PM" src="https://github.com/user-attachments/assets/82d03d55-0b42-4b9a-b486-07f7418d52d8" />
+
+
+.....
+
 
 # 12. Understand the Payload
 
@@ -341,17 +390,6 @@ from the URL query string.
 
 ---
 
-## Processing
-
-The application's JavaScript retrieves the value and uses jQuery to modify the link.
-
-Conceptually:
-
-```javascript
-const returnPath = /* value from location.search */;
-
-$('a').attr('href', returnPath);
-```
 
 ---
 
@@ -541,99 +579,3 @@ CSP should be considered defense in depth rather than a substitute for proper in
 
 ---
 
-# 19. Remediation Summary
-
-| Issue | Recommended Defense |
-|---|---|
-| `returnPath` accepts arbitrary values | Validate expected path format |
-| User input used as `href` | Validate URL before assigning |
-| `javascript:` scheme accepted | Explicitly reject dangerous schemes |
-| Client-side URL manipulation | Use safe URL parsing/validation |
-| DOM XSS defense in depth | Implement CSP |
-
----
-
-# 20. Key Takeaway
-
-The most important lesson from this lab is the **source → processing → sink** methodology.
-
-### Source
-
-```javascript
-location.search
-```
-
-### User-controlled parameter
-
-```text
-returnPath
-```
-
-### Sink
-
-```text
-href
-```
-
-### Exploit
-
-```javascript
-javascript:alert(document.cookie)
-```
-
-The complete concept is:
-
-```text
-location.search
-      ↓
-returnPath
-      ↓
-jQuery
-      ↓
-href attribute
-      ↓
-javascript: URL
-      ↓
-JavaScript execution
-```
-
-When investigating DOM XSS, always ask:
-
-1. **Where does the data come from?** → Source
-2. **How is it processed?** → Data flow
-3. **Where does it end up?** → Sink
-4. **Can I control the dangerous part of that sink?** → Exploitability
-
----
-
-# 21. Evidence
-
-**Initial test value:**
-
-```text
-/test123
-```
-
-**Observed HTML:**
-
-```html
-<a href="/test123">Back</a>
-```
-
-**XSS payload:**
-
-```javascript
-javascript:alert(document.cookie)
-```
-
-**Resulting link:**
-
-```html
-<a href="javascript:alert(document.cookie)">Back</a>
-```
-
-**Trigger:** Click **Back**
-
-**Expected result:** JavaScript alert displaying the page's accessible `document.cookie`.
-
-**Vulnerability confirmed:** Yes — attacker-controlled URL data reaches an executable `href` context, resulting in DOM-based XSS.
