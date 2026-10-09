@@ -96,6 +96,14 @@ https://0ac800d004fd728280eb1ccf00aa0094.web-security-academy.net/
 
 ---
 
+......
+
+
+<img width="1320" height="790" alt="Screenshot 2026-10-09 at 9 34 44 AM" src="https://github.com/user-attachments/assets/97a85581-767c-4ba5-87aa-780a3787511a" />
+
+
+......
+
 # 5. Step 2 — Understand `location.hash`
 
 JavaScript provides the following property:
@@ -160,6 +168,18 @@ The vulnerable jQuery Selector is :
                     </script>
 ```
 
+
+
+.......
+
+<img width="1324" height="725" alt="Screenshot 2026-10-09 at 11 31 41 AM" src="https://github.com/user-attachments/assets/69635957-679e-485e-9e0e-fe5194ed44ae" />
+
+
+.....
+
+
+
+
 # 7. Step 4 — Identify the `hashchange` Event and a `#` Fragment in the URL
 
 Open the PortSwigger lab home page.
@@ -191,6 +211,15 @@ I Wanked A Bike
 **Observation:** The application appears to use the URL fragment to identify a blog post.
 
 ---
+
+
+......
+
+
+<img width="1323" height="574" alt="Screenshot 2026-10-09 at 9 12 57 AM" src="https://github.com/user-attachments/assets/ce340afe-089e-4e1b-96fa-9bd21ee0a448" />
+
+
+......
 
 Now open Developer Tools and select the **Console** tab.
 
@@ -227,6 +256,14 @@ Press Enter.
 ```
 "I Wanked A Bike"
 ```
+
+.....
+
+
+<img width="1321" height="742" alt="Screenshot 2026-10-09 at 9 37 04 AM" src="https://github.com/user-attachments/assets/ac5847dc-6db9-4ad9-892c-bcdb43e7ae20" />
+
+.....
+
 
 Let's break down the expression:
 
@@ -312,9 +349,19 @@ Expected output:
 "Hi Honey"
 ```
 
+......
+
+<img width="1322" height="740" alt="Screenshot 2026-10-09 at 9 35 25 AM" src="https://github.com/user-attachments/assets/896ae0c3-4308-43ba-80d4-5210e9d3daba" />
+
+
+
+.....
+
+
 **Observation:** You successfully controlled the value returned by `location.hash`.
 
 This is an important step in identifying a possible DOM XSS source.
+
 
 # 9. Step 6: Check Whether the `hashchange` Event Fires
 
@@ -348,6 +395,16 @@ Hash changed!
 Current hash: #Test123
 Decoded hash: Test123
 ```
+
+
+.....
+
+
+<img width="1322" height="674" alt="Screenshot 2026-10-09 at 11 16 53 AM" src="https://github.com/user-attachments/assets/4ab2c4ea-18fb-43e9-b467-701e6f8e5a54" />
+
+
+.....
+
 
 ### Important distinction
 
@@ -402,11 +459,21 @@ It contains three important components:
 
 The screenshot below shows the browser's **Print** dialog. This indicates that `print()` was executed successfully.
 
+
+.....
+
+
+<img width="1322" height="744" alt="Screenshot 2026-10-09 at 9 50 43 AM" src="https://github.com/user-attachments/assets/7fdef765-68dd-41cc-a45d-1894adce4555" />
+
+
+....
+
 However, there is an important distinction:
 
 - **Payload execution confirmed:** The browser's print dialog appeared.
 
 The payload has demonstrated JavaScript execution, but you must still complete the lab's exploit-delivery procedure.
+
 
 # 11. Step 8 — Why Direct Exploitation Is Not Enough
 
@@ -429,6 +496,7 @@ This is why an iframe is used.
 
 ---
 
+
 # 12. Step 9 — Open the Exploit Server
 
 From the lab page, locate the **Exploit server** link in the lab banner.
@@ -438,6 +506,8 @@ Open it.
 The **Body** field is where the malicious HTML will be placed.
 
 ---
+
+
 
 # 13. Step 10 — Construct the iframe Exploit
 
@@ -454,6 +524,19 @@ Change the YOUR-LAB-ID to lab one:
 ```
 
 ---
+
+
+......
+
+
+
+<img width="1298" height="745" alt="Screenshot 2026-10-09 at 11 58 05 AM" src="https://github.com/user-attachments/assets/8a2da8a1-b643-4137-bb1a-a7da76c8f391" />
+
+
+.....
+
+
+
 
 # 14. Step 11 — Understand the iframe
 
@@ -474,6 +557,11 @@ The important part is the trailing:
 This establishes the initial fragment.
 
 ---
+
+
+......
+
+
 
 # 15. Step 12 — Understand the `onload` Handler
 
@@ -508,6 +596,10 @@ After the `onload` code executes, the URL is effectively changed to include:
 This causes the iframe's URL fragment to change.
 
 ---
+
+.....
+
+
 
 # 16. Step 13 — Why the `hashchange` Event Fires
 
@@ -625,6 +717,18 @@ This confirms that the exploit is functioning.
 
 ---
 
+
+......
+
+
+
+<img width="1323" height="747" alt="Screenshot 2026-10-09 at 12 01 34 PM" src="https://github.com/user-attachments/assets/d590b35d-e12b-4299-bb79-60e690e8f96a" />
+
+
+.....
+
+
+
 # 20. Step 17 — Deliver the Exploit to the Victim
 
 Return to the exploit server.
@@ -662,6 +766,19 @@ print()
 ```
 
 If successful, the lab will be marked as **Solved**.
+
+
+
+......
+
+
+
+<img width="1322" height="745" alt="Screenshot 2026-10-09 at 12 01 12 PM" src="https://github.com/user-attachments/assets/aeae781a-fc65-4c77-8021-341a6c3e2eea" />
+
+
+
+......
+
 
 ---
 
