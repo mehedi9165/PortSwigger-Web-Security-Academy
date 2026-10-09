@@ -320,11 +320,6 @@ Decoded hash: Test123
 
 # 10. Step 7: Test the XSS Payload — `<img src=x onerror=print()>`
 
-## 
-
-Now that you have confirmed that the URL fragment is attacker-controlled and investigated the `hashchange` event, the next step is to test the payload used in this lab.
-
-### 5.1 Use the Payload
 
 The payload is:
 
@@ -332,8 +327,6 @@ The payload is:
 <img src=x onerror=print()>
 ```
 
-
-### 5.2 Observe the Result
 
 The screenshot below shows the browser's **Print** dialog. This indicates that `print()` was executed successfully.
 
@@ -557,12 +550,7 @@ This confirms that the exploit is functioning.
 
 ---
 
-
-
-
 <img width="1323" height="747" alt="Screenshot 2026-10-09 at 12 01 34 PM" src="https://github.com/user-attachments/assets/d590b35d-e12b-4299-bb79-60e690e8f96a" />
-
-
 
 
 # 20. Step 17 — Deliver the Exploit to the Victim
