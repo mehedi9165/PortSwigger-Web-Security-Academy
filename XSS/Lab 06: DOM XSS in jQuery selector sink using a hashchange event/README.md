@@ -114,35 +114,11 @@ location.hash
 
 It represents the fragment portion of the current URL.
 
-For example, if the URL is:
 
-```
-https://example.com/#hello
-```
-
-then:
-
-```
-location.hash
-```
-
-returns:
-
-```
-#hello
-```
 
 The important point is that the fragment is controlled by the user.
 
-Therefore:
 
-```
-URL fragment
-     ↓
-location.hash
-     ↓
-Attacker-controlled data
-```
 
 ---
 
@@ -169,14 +145,7 @@ The vulnerable jQuery Selector is :
 ```
 
 
-
-
-
 <img width="1324" height="725" alt="Screenshot 2026-10-09 at 11 31 41 AM" src="https://github.com/user-attachments/assets/69635957-679e-485e-9e0e-fe5194ed44ae" />
-
-
-
-
 
 
 
@@ -196,11 +165,6 @@ The relevant part is:
 #I%20Wanked%20A%20Bike
 ```
 
-Here:
-
-- `#` marks the beginning of the URL fragment.
-- `%20` represents an encoded space.
-- `I%20Wanked%20A%20Bike` represents the post title with encoded spaces.
 
 The decoded post title is:
 
@@ -213,11 +177,7 @@ I Wanked A Bike
 ---
 
 
-
-
 <img width="1323" height="574" alt="Screenshot 2026-10-09 at 9 12 57 AM" src="https://github.com/user-attachments/assets/ce340afe-089e-4e1b-96fa-9bd21ee0a448" />
-
-
 
 
 Now open Developer Tools and select the **Console** tab.
@@ -257,21 +217,7 @@ Press Enter.
 ```
 
 
-
-
 <img width="1321" height="742" alt="Screenshot 2026-10-09 at 9 37 04 AM" src="https://github.com/user-attachments/assets/ac5847dc-6db9-4ad9-892c-bcdb43e7ae20" />
-
-
-
-
-Let's break down the expression:
-
-| Code | Meaning |
-| --- | --- |
-| `window.location` | Represents the current page's location. |
-| `.hash` | Retrieves the URL fragment, including `#`. |
-| `.slice(1)` | Removes the first character, which is `#`. |
-| `decodeURIComponent()` | Decodes percent-encoded characters such as `%20`. |
 
 
 **Observation:** The fragment is accessible to JavaScript and can be decoded into a readable post title.
@@ -326,13 +272,7 @@ Expected output:
 "Hi Honey"
 ```
 
-
-
 <img width="1322" height="740" alt="Screenshot 2026-10-09 at 9 35 25 AM" src="https://github.com/user-attachments/assets/896ae0c3-4308-43ba-80d4-5210e9d3daba" />
-
-
-
-
 
 
 **Observation:** You successfully controlled the value returned by `location.hash`.
@@ -374,20 +314,9 @@ Decoded hash: Test123
 ```
 
 
-
-
-
 <img width="1322" height="674" alt="Screenshot 2026-10-09 at 11 16 53 AM" src="https://github.com/user-attachments/assets/4ab2c4ea-18fb-43e9-b467-701e6f8e5a54" />
 
 
-
-
-
-### Important distinction
-
-This test confirms that the browser fires the `hashchange` event.
-
-**It does not, by itself, prove that the application's vulnerable handler executed.** 
 
 # 10. Step 7: Test the XSS Payload — `<img src=x onerror=print()>`
 
@@ -403,14 +332,6 @@ The payload is:
 <img src=x onerror=print()>
 ```
 
-It contains three important components:
-
-| Component | Explanation |
-| --- | --- |
-| `<img>` | Creates an HTML image element. |
-| `src=x` | Attempts to load an image from the specified source. |
-| `onerror=print()` | Calls the browser's `print()` function if image loading fails. |
-
 
 ### 5.2 Observe the Result
 
@@ -418,9 +339,7 @@ The screenshot below shows the browser's **Print** dialog. This indicates that
 
 
 
-
 <img width="1322" height="744" alt="Screenshot 2026-10-09 at 9 50 43 AM" src="https://github.com/user-attachments/assets/7fdef765-68dd-41cc-a45d-1894adce4555" />
-
 
 
 However, there is an important distinction:
@@ -481,14 +400,7 @@ Change the YOUR-LAB-ID to lab one:
 ---
 
 
-
-
-
 <img width="1298" height="745" alt="Screenshot 2026-10-09 at 11 58 05 AM" src="https://github.com/user-attachments/assets/8a2da8a1-b643-4137-bb1a-a7da76c8f391" />
-
-
-
-
 
 
 
@@ -511,10 +423,6 @@ The important part is the trailing:
 This establishes the initial fragment.
 
 ---
-
-
-......
-
 
 
 # 15. Step 12 — Understand the `onload` Handler
@@ -550,8 +458,6 @@ After the `onload` code executes, the URL is effectively changed to include:
 This causes the iframe's URL fragment to change.
 
 ---
-
-.....
 
 
 
@@ -674,89 +580,12 @@ The simulated victim will visit the exploit.
 If successful, the lab will be marked as **Solved**.
 
 
-
-......
-
-
-
 <img width="1322" height="745" alt="Screenshot 2026-10-09 at 12 01 12 PM" src="https://github.com/user-attachments/assets/aeae781a-fc65-4c77-8021-341a6c3e2eea" />
 
-
-
-......
-
-
----
-
-# 
-
----
-
-# 21. Source → Sink Analysis
-
-This is the most important part to document in your GitHub portfolio.
-
-## Source
-
-The attacker-controlled source is:
-
-```
-location.hash
-```
-
-The value comes from the URL fragment:
-
-```
-https://target/#ATTACKER_CONTROLLED_DATA
-```
-
----
-
-## Event
-
-The application monitors:
-
-```
-hashchange
-```
-
-When the fragment changes, the vulnerable code executes.
-
----
-
-## Sink
-
-The dangerous sink is jQuery's:
-
-```
-$()
-```
-
-selector.
-
-Conceptually:
-
-```
-$(location.hash)
-```
-
-The attacker therefore controls the data reaching the selector.
-
----
-
-## Payload
-
-The injected HTML is:
-
-```
-<img src=x onerror=print()>
-```
-
 ---
 
 
-
-# 22. Impact
+# 21. Impact
 
 DOM XSS can allow an attacker to execute JavaScript in the security context of the vulnerable application.
 
@@ -773,9 +602,9 @@ The actual impact depends on the application's security controls and the victim'
 
 ---
 
-# 23. Defensive Measures
+# 22. Defensive Measures
 
-## 23.1 Do Not Use Untrusted Hash Values Directly as Selectors
+## 22.1 Do Not Use Untrusted Hash Values Directly as Selectors
 
 Avoid patterns such as:
 
@@ -789,7 +618,7 @@ Instead, validate the fragment against an expected format.
 
 ---
 
-## 23.2 Validate the Hash
+## 22.2 Validate the Hash
 
 If the application expects a post identifier, allow only valid identifiers.
 
@@ -805,7 +634,7 @@ Unexpected HTML or selector syntax should be rejected.
 
 ---
 
-## 23.3 Avoid Dangerous jQuery Selector Construction
+## 22.3 Avoid Dangerous jQuery Selector Construction
 
 Do not construct selectors directly from untrusted data.
 
@@ -813,7 +642,7 @@ Instead, safely identify the expected element using controlled identifiers and a
 
 ---
 
-## 23.4 Use Safe DOM APIs
+## 22.4 Use Safe DOM APIs
 
 Where appropriate, prefer APIs that treat input as data rather than HTML or selectors.
 
@@ -827,7 +656,7 @@ can be preferable when the application expects a specific element ID and `id` 
 
 ---
 
-## 23.5 Content Security Policy
+## 22.5 Content Security Policy
 
 Implement a strong Content Security Policy as an additional layer of defense.
 
