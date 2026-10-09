@@ -274,28 +274,6 @@ Let's break down the expression:
 | `.slice(1)` | Removes the first character, which is `#`. |
 | `decodeURIComponent()` | Decodes percent-encoded characters such as `%20`. |
 
-The data flow is:
-
-```
-URL
- |
- └── #I%20Wanked%20A%20Bike
-                |
-                ▼
-      window.location.hash
-                |
-                ▼
-      .slice(1)
-                |
-                ▼
-       I%20Wanked%20A%20Bike
-                |
-                ▼
-      decodeURIComponent()
-                |
-                ▼
-        I Wanked A Bike
-```
 
 **Observation:** The fragment is accessible to JavaScript and can be decoded into a readable post title.
 
@@ -434,28 +412,8 @@ It contains three important components:
 | `src=x` | Attempts to load an image from the specified source. |
 | `onerror=print()` | Calls the browser's `print()` function if image loading fails. |
 
-### 5.2 Understand the Execution Flow
 
-```
-<img src=x onerror=print()>
-              |
-              ▼
-       Browser loads image
-              |
-              ▼
-        Image loading fails
-              |
-              ▼
-         onerror fires
-              |
-              ▼
-          print() runs
-              |
-              ▼
-       Browser print dialog
-```
-
-### 5.3 Observe the Result
+### 5.2 Observe the Result
 
 The screenshot below shows the browser's **Print** dialog. This indicates that `print()` was executed successfully.
 
@@ -625,27 +583,7 @@ hashchange
 
 The vulnerable application responds to this event.
 
-The attack chain therefore becomes:
 
-```
-iframe loads
-     ↓
-onload executes
-     ↓
-iframe.src changes
-     ↓
-URL hash changes
-     ↓
-hashchange event fires
-     ↓
-location.hash changes
-     ↓
-jQuery $() receives attacker-controlled value
-     ↓
-XSS
-     ↓
-print()
-```
 
 ---
 
@@ -739,31 +677,7 @@ Click:
 
 The simulated victim will visit the exploit.
 
-The victim's browser then follows the complete attack chain:
 
-```
-Exploit Server
-      ↓
-Malicious iframe
-      ↓
-Lab Home Page
-      ↓
-iframe onload
-      ↓
-URL fragment modification
-      ↓
-hashchange
-      ↓
-location.hash
-      ↓
-jQuery $() selector
-      ↓
-Injected HTML
-      ↓
-onerror
-      ↓
-print()
-```
 
 If successful, the lab will be marked as **Solved**.
 
@@ -848,76 +762,9 @@ The injected HTML is:
 
 ---
 
-# 22. Full Data Flow
 
-```
-Attacker
-   │
-   ▼
-Exploit Server
-   │
-   ▼
-Malicious iframe
-   │
-   ▼
-Lab Home Page
-   │
-   ▼
-iframe onload
-   │
-   ▼
-Change URL fragment
-   │
-   ▼
-hashchange event
-   │
-   ▼
-location.hash
-   │
-   ▼
-jQuery $() selector
-   │
-   ▼
-Injected HTML
-   │
-   ▼
-<img src=x onerror=print()>
-   │
-   ▼
-Image loading fails
-   │
-   ▼
-onerror
-   │
-   ▼
-print()
-```
 
----
-
-# 23. Why Is This DOM XSS?
-
-This is **DOM-based XSS** because the malicious input is processed by JavaScript in the browser.
-
-The important flow is:
-
-```
-URL
- ↓
-location.hash
- ↓
-Client-side JavaScript
- ↓
-DOM sink
- ↓
-JavaScript execution
-```
-
-The server does not need to reflect the payload into the HTML response for the attack to work.
-
----
-
-# 24. Impact
+# 22. Impact
 
 DOM XSS can allow an attacker to execute JavaScript in the security context of the vulnerable application.
 
@@ -934,9 +781,9 @@ The actual impact depends on the application's security controls and the victim'
 
 ---
 
-# 25. Defensive Measures
+# 23. Defensive Measures
 
-## 25.1 Do Not Use Untrusted Hash Values Directly as Selectors
+## 23.1 Do Not Use Untrusted Hash Values Directly as Selectors
 
 Avoid patterns such as:
 
@@ -950,7 +797,7 @@ Instead, validate the fragment against an expected format.
 
 ---
 
-## 25.2 Validate the Hash
+## 23.2 Validate the Hash
 
 If the application expects a post identifier, allow only valid identifiers.
 
@@ -966,7 +813,7 @@ Unexpected HTML or selector syntax should be rejected.
 
 ---
 
-## 25.3 Avoid Dangerous jQuery Selector Construction
+## 23.3 Avoid Dangerous jQuery Selector Construction
 
 Do not construct selectors directly from untrusted data.
 
@@ -974,7 +821,7 @@ Instead, safely identify the expected element using controlled identifiers and a
 
 ---
 
-## 25.4 Use Safe DOM APIs
+## 23.4 Use Safe DOM APIs
 
 Where appropriate, prefer APIs that treat input as data rather than HTML or selectors.
 
@@ -988,7 +835,7 @@ can be preferable when the application expects a specific element ID and `id` 
 
 ---
 
-## 25.5 Content Security Policy
+## 23.5 Content Security Policy
 
 Implement a strong Content Security Policy as an additional layer of defense.
 
