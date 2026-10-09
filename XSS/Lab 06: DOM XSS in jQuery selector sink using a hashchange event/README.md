@@ -96,13 +96,13 @@ https://0ac800d004fd728280eb1ccf00aa0094.web-security-academy.net/
 
 ---
 
-......
+
 
 
 <img width="1320" height="790" alt="Screenshot 2026-10-09 at 9 34 44 AM" src="https://github.com/user-attachments/assets/97a85581-767c-4ba5-87aa-780a3787511a" />
 
 
-......
+
 
 # 5. Step 2 — Understand `location.hash`
 
@@ -170,12 +170,12 @@ The vulnerable jQuery Selector is :
 
 
 
-.......
+
 
 <img width="1324" height="725" alt="Screenshot 2026-10-09 at 11 31 41 AM" src="https://github.com/user-attachments/assets/69635957-679e-485e-9e0e-fe5194ed44ae" />
 
 
-.....
+
 
 
 
@@ -213,13 +213,12 @@ I Wanked A Bike
 ---
 
 
-......
 
 
 <img width="1323" height="574" alt="Screenshot 2026-10-09 at 9 12 57 AM" src="https://github.com/user-attachments/assets/ce340afe-089e-4e1b-96fa-9bd21ee0a448" />
 
 
-......
+
 
 Now open Developer Tools and select the **Console** tab.
 
@@ -257,12 +256,12 @@ Press Enter.
 "I Wanked A Bike"
 ```
 
-.....
+
 
 
 <img width="1321" height="742" alt="Screenshot 2026-10-09 at 9 37 04 AM" src="https://github.com/user-attachments/assets/ac5847dc-6db9-4ad9-892c-bcdb43e7ae20" />
 
-.....
+
 
 
 Let's break down the expression:
@@ -327,13 +326,13 @@ Expected output:
 "Hi Honey"
 ```
 
-......
+
 
 <img width="1322" height="740" alt="Screenshot 2026-10-09 at 9 35 25 AM" src="https://github.com/user-attachments/assets/896ae0c3-4308-43ba-80d4-5210e9d3daba" />
 
 
 
-.....
+
 
 
 **Observation:** You successfully controlled the value returned by `location.hash`.
@@ -375,13 +374,13 @@ Decoded hash: Test123
 ```
 
 
-.....
+
 
 
 <img width="1322" height="674" alt="Screenshot 2026-10-09 at 11 16 53 AM" src="https://github.com/user-attachments/assets/4ab2c4ea-18fb-43e9-b467-701e6f8e5a54" />
 
 
-.....
+
 
 
 ### Important distinction
@@ -418,13 +417,11 @@ It contains three important components:
 The screenshot below shows the browser's **Print** dialog. This indicates that `print()` was executed successfully.
 
 
-.....
 
 
 <img width="1322" height="744" alt="Screenshot 2026-10-09 at 9 50 43 AM" src="https://github.com/user-attachments/assets/7fdef765-68dd-41cc-a45d-1894adce4555" />
 
 
-....
 
 However, there is an important distinction:
 
@@ -484,14 +481,13 @@ Change the YOUR-LAB-ID to lab one:
 ---
 
 
-......
 
 
 
 <img width="1298" height="745" alt="Screenshot 2026-10-09 at 11 58 05 AM" src="https://github.com/user-attachments/assets/8a2da8a1-b643-4137-bb1a-a7da76c8f391" />
 
 
-.....
+
 
 
 
@@ -656,14 +652,10 @@ This confirms that the exploit is functioning.
 ---
 
 
-......
-
 
 
 <img width="1323" height="747" alt="Screenshot 2026-10-09 at 12 01 34 PM" src="https://github.com/user-attachments/assets/d590b35d-e12b-4299-bb79-60e690e8f96a" />
 
-
-.....
 
 
 
