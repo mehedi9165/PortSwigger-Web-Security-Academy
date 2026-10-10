@@ -69,17 +69,24 @@ Submit the search.
 The random string helps identify exactly where your input appears in the resulting HTML.
 
 
+<img width="1319" height="670" alt="Screenshot 2026-10-10 at 11 42 41 PM" src="https://github.com/user-attachments/assets/dfb25606-ad9b-4297-baf8-fdf96e0fb682" />
+
+
 ### Step 3 — Identify the HTML context
 
 Suppose the response contains an attribute similar to:
 
 ```
-<input type="text" value="test123abc">
+<input type="text" placeholder="Search the blog..." name="search" value="test123abc">
 ```
 
-This is an illustrative example of a quoted attribute context. The actual vulnerable element may differ in the lab.
-
 The important observation is that your input appears between double quotes.
+
+
+
+
+<img width="972" height="520" alt="Screenshot 2026-10-10 at 11 44 09 PM" src="https://github.com/user-attachments/assets/1b0e45c7-017e-44e6-8aa4-3125844b05ba" />
+
 
 The data flow is:
 
@@ -102,18 +109,23 @@ In Burp Repeater, replace the random string with:
 "onmouseover="alert(1)
 ```
 
+
 Send the request and inspect the response.
 
 
 the resulting HTML may resemble:
 
 ```
-<input value="" onmouseover="alert(1)">
+<input type="text" placeholder="Search the blog..." name="search" value="" onmouseover="alert(1)">
 ```
 
 The original attribute is closed, and a new event-handler attribute is introduced.
 
-The exact resulting markup depends on the vulnerable element and the application's output handling.
+
+
+
+<img width="976" height="520" alt="Screenshot 2026-10-10 at 11 53 38 PM" src="https://github.com/user-attachments/assets/adde6c48-0725-4f6b-970a-6b119ca0da31" />
+
 
 ### Step 5 — Verify the exploit in the browser
 
@@ -130,6 +142,10 @@ If the injection succeeds, the browser displays an alert containing:
 ```
 
 This confirms JavaScript execution.
+
+
+
+<img width="1321" height="675" alt="Screenshot 2026-10-10 at 11 55 34 PM" src="https://github.com/user-attachments/assets/f86a3a0e-3214-4253-8c85-ea5a4d53e71c" />
 
 
 ## 4. Why Is This Vulnerable?
