@@ -1,4 +1,4 @@
-<img width="971" height="488" alt="Screenshot 2026-10-11 at 2 31 59 PM" src="https://github.com/user-attachments/assets/227ebccc-5b1f-4944-80ba-c1e941e19a23" /># Stored XSS into Anchor `href` Attribute with Double Quotes HTML-Encoded
+# Stored XSS into Anchor `href` Attribute with Double Quotes HTML-Encoded
 
 ## 1. Vulnerability
 
@@ -132,6 +132,8 @@ If the injection succeeds, the anchor may resemble:
 
 This indicates that the application has accepted a JavaScript URL as the link destination.
 
+
+<img width="971" height="488" alt="Screenshot 2026-10-11 at 2 31 59 PM" src="https://github.com/user-attachments/assets/d86ac3e9-ab54-43d1-9b23-421e81c6a434" />
 
 
 ### Step 5 — Trigger the payload
