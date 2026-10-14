@@ -72,6 +72,11 @@ Search the response for:
 test123abc
 ```
 
+
+
+
+<img width="1320" height="731" alt="Screenshot 2026-10-15 at 12 01 12 AM" src="https://github.com/user-attachments/assets/8f16921d-c605-4ed2-99ec-785aa87af2db" />
+
 ### Step 4 — Identify the JavaScript context
 
 You should find the search term reflected inside a JavaScript string.
@@ -84,36 +89,24 @@ For example, the response may contain code similar to:
 </script>
 ```
 
-This is an illustrative example. Record the exact JavaScript context observed in your lab response.
+
+<img width="1321" height="734" alt="Screenshot 2026-10-14 at 11 54 38 PM" src="https://github.com/user-attachments/assets/b553f972-758a-48f1-ab92-5374f44b2df2" />
+
+
+
+In inspect mode it looks like below:
+
+
+<img width="973" height="462" alt="Screenshot 2026-10-14 at 8 47 08 PM" src="https://github.com/user-attachments/assets/6cbc2cd8-378a-4018-a98c-3c9a61a9dd31" />
+
+
+
 
 The important observation is that the input is enclosed by single quotes.
 
-The data flow is:
 
-```text
-Search input
-     ↓
-HTTP request
-     ↓
-Server response
-     ↓
-JavaScript string
-```
 
-### Step 5 — Understand the protection limitation
-
-The application HTML-encodes angle brackets:
-
-```text
-<  →  &lt;
->  →  &gt;
-```
-
-This can prevent certain HTML injection techniques, but the reflection occurs inside JavaScript code.
-
-In this context, the single quote is significant because it can terminate the existing JavaScript string if it is not properly escaped.
-
-### Step 6 — Submit the XSS payload
+### Step 5 — Submit the XSS payload
 
 Replace the random search value with:
 
@@ -122,6 +115,16 @@ Replace the random search value with:
 ```
 
 Submit the request through Burp Repeater, or use the resulting search URL in the browser.
+
+
+<img width="1319" height="737" alt="Screenshot 2026-10-14 at 11 56 05 PM" src="https://github.com/user-attachments/assets/7fb7319c-fc11-4ac8-80cf-e7495041b96b" />
+
+
+In console:
+
+<img width="974" height="467" alt="Screenshot 2026-10-14 at 8 58 31 PM" src="https://github.com/user-attachments/assets/f5cde5de-6038-415c-8096-a5c37aab3249" />
+
+
 
 ### Step 7 — Verify the result
 
@@ -138,6 +141,12 @@ will appear.
 This confirms that the injected expression was executed in the page's JavaScript context.
 
 ---
+
+<img width="1317" height="742" alt="Screenshot 2026-10-14 at 11 56 44 PM" src="https://github.com/user-attachments/assets/b420546d-9759-4cc9-a0a4-62bed3d28d5e" />
+
+
+<img width="1316" height="673" alt="Screenshot 2026-10-15 at 12 08 53 AM" src="https://github.com/user-attachments/assets/91331103-4f86-4487-b769-498dccf5209f" />
+
 
 ## 4. How the Payload Works
 
@@ -203,19 +212,8 @@ Injected JavaScript expression
 alert(1) executes
 ```
 
-## 6. Why Does This Work?
 
-The vulnerability exists because the application handles input as if HTML encoding alone were sufficient.
-
-However, HTML parsing and JavaScript parsing are different contexts.
-
-The application places user-controlled input into a JavaScript string without correctly encoding it for that context.
-
-As a result, the attacker can change the structure of the JavaScript code.
-
-**Key lesson:** Output encoding must match the context in which the data is inserted.
-
-## 7. Impact
+## 6. Impact
 
 Depending on the application and the victim's privileges, reflected XSS may allow an attacker to:
 
@@ -228,21 +226,21 @@ Depending on the application and the victim's privileges, reflected XSS may allo
 
 The actual impact depends on the application's architecture, authentication model, and security controls.
 
-## 8. Defensive Measures
+## 7. Defensive Measures
 
-### 8.1 Avoid inserting untrusted data directly into JavaScript
+### 7.1 Avoid inserting untrusted data directly into JavaScript
 
 Prefer passing data through mechanisms that preserve the distinction between data and executable code.
 
 For example, use JSON serialization for structured data rather than manually constructing JavaScript strings.
 
-### 8.2 Apply JavaScript-context-safe encoding
+### 7.2 Apply JavaScript-context-safe encoding
 
 If data must be embedded inside JavaScript, use a well-tested encoding mechanism appropriate for that context.
 
 Simply HTML-encoding angle brackets is not sufficient.
 
-### 8.3 Prefer safe DOM APIs
+### 7.3 Prefer safe DOM APIs
 
 When the goal is to display a search term, use APIs such as:
 
@@ -252,79 +250,11 @@ element.textContent = searchTerms;
 
 This treats the value as text rather than executable markup.
 
-### 8.4 Use secure templating
+### 7.4 Use secure templating
 
 Use a framework or templating system that supports contextual output encoding. Avoid concatenating untrusted data into inline script blocks.
 
-### 8.5 Implement Content Security Policy
+### 7.5 Implement Content Security Policy
 
 A strong Content Security Policy (CSP) can provide additional defense in depth against XSS. It should not replace correct output handling.
 
-## 9. Remediation Summary
-
-| Issue | Recommended Defense |
-|---|---|
-| Input reflected into JavaScript | Avoid direct interpolation |
-| Single quote can terminate a string | Use context-appropriate encoding |
-| HTML encoding used as the only defense | Apply JavaScript-context-safe handling |
-| Dynamic script construction | Use safe data serialization |
-| Search term displayed in the page | Prefer `textContent` |
-| Additional XSS protection needed | Implement CSP |
-
-## 10. Key Takeaway
-
-This lab demonstrates that **HTML encoding does not automatically make a JavaScript string safe**.
-
-The essential data flow is:
-
-```text
-Search parameter
-      ↓
-JavaScript string
-      ↓
-Single-quote escape
-      ↓
-Injected expression
-      ↓
-alert(1)
-```
-
-When testing XSS, identify the exact context before choosing a payload.
-
-Ask:
-
-1. Is the input reflected in HTML text, an HTML attribute, a URL, or JavaScript?
-2. Which characters are encoded?
-3. Can the input terminate the current string or expression?
-4. Can the surrounding syntax be used to execute a JavaScript expression?
-5. What encoding or design change would prevent the injection?
-
-## 11. Evidence
-
-**Test input:**
-
-```text
-test123abc
-```
-
-**Observed context:**
-
-```javascript
-var searchTerms = 'test123abc';
-```
-
-**Payload:**
-
-```javascript
-'-alert(1)-'
-```
-
-**Trigger:** Load the crafted search URL.
-
-**Expected result:** A JavaScript alert displaying `1`.
-
-**Verification:** Confirm that the reflected input appears inside the JavaScript string and that the injected expression executes.
-
-**Lab status:** Solved.
-
-**Remediation:** Avoid direct JavaScript string interpolation and use context-appropriate output handling.
