@@ -91,20 +91,24 @@ The parameter `storeId` can be controlled by changing the URL.
 Add a `storeId` parameter containing a unique alphanumeric string:
 
 ```text
-?productId=1&storeId=test123
+?productId=1&storeId=test
 ```
 
 Load the modified URL.
 
-The random value helps you determine whether the application uses the parameter when generating the stock checker options.
+
 
 ### Step 4 — Observe the drop-down list
 
 Look at the stock checker drop-down list.
 
-If the value is reflected successfully, you should see `test123` as one of the options.
+If the value is reflected successfully, you should see `test` as one of the options.
 
 This confirms that the parameter influences the page's client-side output.
+
+
+<img width="1325" height="746" alt="Screenshot 2026-10-16 at 8 58 06 AM" src="https://github.com/user-attachments/assets/956eda84-317d-40c4-ad52-c373bd999b13" />
+
 
 ### Step 5 — Inspect the HTML
 
@@ -122,23 +126,26 @@ You may observe markup conceptually similar to:
 </select>
 ```
 
-This is illustrative markup; use the actual DOM observed in your browser for your evidence.
+
+<img width="880" height="536" alt="Screenshot 2026-10-16 at 12 32 50 AM" src="https://github.com/user-attachments/assets/0eb0e846-b6d1-459a-88e9-ac1de01b3ba5" />
+
 
 The important finding is that attacker-controlled input has been inserted into an HTML structure.
+
+
+
+<img width="883" height="520" alt="Screenshot 2026-10-16 at 12 21 21 AM" src="https://github.com/user-attachments/assets/ae100802-f79f-4305-b7c2-48263eac296d" />
+
+
+
+<img width="1324" height="743" alt="Screenshot 2026-10-16 at 12 21 53 AM" src="https://github.com/user-attachments/assets/01f2c03e-d16a-4cb0-a338-9c58c0e1bbde" />
 
 ### Step 6 — Understand the vulnerable JavaScript
 
 The application reads a value from the query string and passes it to `document.write()`.
 
-Conceptually, the code behaves like:
 
-```javascript
-const storeId = /* value extracted from location.search */;
-
-document.write('<option>' + storeId + '</option>');
-```
-
-The actual implementation may differ, but the vulnerable data flow is:
+The vulnerable data flow is:
 
 ```text
 location.search
@@ -162,11 +169,6 @@ Use the following payload:
 "></select><img src=1 onerror=alert(1)>
 ```
 
-The payload contains three important operations:
-
-1. The double quote (`"`) terminates the existing quoted attribute.
-2. `></select>` closes the current tag and the `<select>` element.
-3. The `<img>` element introduces an event handler that executes JavaScript when image loading fails.
 
 ### Step 8 — Insert the payload into the URL
 
@@ -176,13 +178,12 @@ Use the product URL with the `storeId` parameter:
 /product?productId=1&storeId="></select><img src=1 onerror=alert(1)>
 ```
 
-For a browser-safe URL, encode the spaces and other characters as needed. The lab's supplied payload can be represented as:
-
-```text
-product?productId=1&storeId="></select><img%20src=1%20onerror=alert(1)>
-```
 
 Load the modified URL in the lab browser.
+
+<img width="883" height="538" alt="Screenshot 2026-10-16 at 12 30 51 AM" src="https://github.com/user-attachments/assets/0f78ac4e-c228-4b96-a220-0629d22221b9" />
+
+
 
 ### Step 9 — Verify JavaScript execution
 
@@ -195,6 +196,11 @@ If the payload executes successfully, the browser displays a JavaScript alert co
 This confirms that the injected HTML was interpreted by the browser and that the `onerror` handler executed.
 
 ---
+
+
+
+<img width="1322" height="745" alt="Screenshot 2026-10-16 at 12 31 04 AM" src="https://github.com/user-attachments/assets/8b32c3e9-1b6a-4b3e-bff5-9b19a2ac4de0" />
+
 
 ## 4. Payload Breakdown
 
@@ -224,27 +230,6 @@ Creates an image element. The browser attempts to load the resource specified by
 
 When image loading fails, the `onerror` handler invokes `alert(1)`.
 
-The browser's execution flow is:
-
-```text
-Attacker-controlled storeId
-          ↓
-document.write()
-          ↓
-HTML parser processes input
-          ↓
-Existing attribute is terminated
-          ↓
-<select> element is closed
-          ↓
-<img> element is created
-          ↓
-Image loading fails
-          ↓
-onerror handler executes
-          ↓
-alert(1)
-```
 
 ---
 
@@ -327,102 +312,3 @@ CSP is a defense-in-depth measure and should not replace safe DOM manipulation.
 
 ---
 
-## 8. Remediation Summary
-
-| Issue | Recommended Defense |
-|---|---|
-| URL parameter reaches `document.write()` | Avoid writing untrusted data as HTML |
-| User input changes HTML structure | Use safe DOM APIs |
-| `storeId` accepts unexpected values | Validate against expected identifiers |
-| HTML parsing of user input | Use `textContent` where appropriate |
-| Additional XSS protection | Implement CSP |
-
----
-
-## 9. Key Takeaway
-
-This lab demonstrates the **source → sink → HTML parsing → execution** methodology used to investigate DOM XSS.
-
-### Source
-
-```javascript
-location.search
-```
-
-### Parameter
-
-```text
-storeId
-```
-
-### Sink
-
-```javascript
-document.write()
-```
-
-### Payload
-
-```html
-"></select><img src=1 onerror=alert(1)>
-```
-
-### Execution chain
-
-```text
-URL query string
-       ↓
-location.search
-       ↓
-storeId
-       ↓
-document.write()
-       ↓
-Break out of existing HTML context
-       ↓
-Inject an image element
-       ↓
-onerror event
-       ↓
-alert(1)
-```
-
-When investigating DOM XSS, always identify where data originates, how JavaScript processes it, which HTML context receives it, and whether the browser interprets the data as executable markup.
-
----
-
-## 10. Evidence
-
-**Test value:**
-
-```text
-test123
-```
-
-**Source:**
-
-```javascript
-location.search
-```
-
-**Sink:**
-
-```javascript
-document.write()
-```
-
-**Payload:**
-
-```html
-"></select><img src=1 onerror=alert(1)>
-```
-
-**Trigger:** Load the crafted product URL.
-
-**Expected result:** A JavaScript alert displaying `1`.
-
-**Verification:** Confirm that the `storeId` value appears in the stock checker output and that the crafted URL causes JavaScript execution.
-
-**Remediation:** Avoid writing untrusted data into HTML and use safe DOM APIs.
-
-**Lab status:** Mark as solved only after confirming the alert in the lab environment.
