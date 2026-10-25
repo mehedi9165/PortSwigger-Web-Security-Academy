@@ -80,6 +80,9 @@ function escapeHTML(html) {
 }
 ```
 
+<img width="1279" height="686" alt="Screenshot 2026-10-25 at 12 16 14 AM" src="https://github.com/user-attachments/assets/ae67a045-6140-438a-9ff6-b61dfc0d1508" />
+
+
 ### Step 4 — Submit the payload
 
 Submit the following comment:
@@ -90,6 +93,9 @@ Submit the following comment:
 
 The initial angle brackets are intended to consume the filter's first replacement, leaving the later HTML markup available for interpretation.
 
+
+
+
 ### Step 5 — Understand the bypass
 
 if the application replaces only the first `<` and the first `>`, the payload can be transformed into something resembling:
@@ -99,6 +105,21 @@ if the application replaces only the first `<` and the first `>`, the payload ca
 ```
 
 The initial pair has been encoded, but the later `<img>` element remains intact.
+
+
+<img width="1268" height="679" alt="Screenshot 2026-10-25 at 12 20 06 AM" src="https://github.com/user-attachments/assets/a55aaffd-472d-4aa3-8216-b0ac15942080" />
+
+
+<img width="1273" height="646" alt="Screenshot 2026-10-25 at 12 20 27 AM" src="https://github.com/user-attachments/assets/866c9001-3b50-4730-a7df-30136217fad1" />
+
+
+
+
+
+
+<img width="1276" height="641" alt="Screenshot 2026-10-25 at 12 22 28 AM" src="https://github.com/user-attachments/assets/35c3312d-eab0-4ae3-a2f2-68fc4a0d0bf1" />
+
+
 
 The browser can therefore interpret the image markup as HTML when the application inserts the processed comment into an HTML-parsing context.
 
