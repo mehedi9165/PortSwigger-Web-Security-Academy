@@ -50,6 +50,10 @@ Submit the search and observe the response.
 
 **Observation:** The request is blocked, indicating that this tag-and-event combination does not pass the application's filter.
 
+
+<img width="1151" height="570" alt="Screenshot 2026-10-29 at 8 29 06 AM" src="https://github.com/user-attachments/assets/24beb5cd-f24d-49d5-931e-7c7392bbe0cf" />
+
+
 ### Step 2: Send the request to Burp Intruder
 
 1. Open the lab using Burp's browser.
@@ -71,6 +75,15 @@ The payload position should look like:
 <§§>
 ```
 
+
+
+<img width="1275" height="688" alt="Screenshot 2026-10-29 at 8 54 45 AM" src="https://github.com/user-attachments/assets/530fbcad-b207-457b-9903-d31879a86473" />
+
+
+<img width="1276" height="758" alt="Screenshot 2026-10-29 at 8 54 31 AM" src="https://github.com/user-attachments/assets/54ab8b18-ecad-4c9b-9f85-3705995f20f9" />
+
+
+
 ### Step 3: Discover the permitted SVG tags
 
 1. Open the PortSwigger XSS Cheat Sheet.
@@ -90,6 +103,7 @@ According to the lab's solution, these tags receive `200` responses:
 Most other tested tags receive `400` responses.
 
 **Interpretation:** The four tags are promising candidates for further testing. A `200` response alone does not prove that the tag can execute JavaScript.
+
 
 ### Step 4: Discover the permitted event handler
 
@@ -114,6 +128,16 @@ Then:
 5. Click **Start attack**.
 6. Review the results.
 
+
+<img width="1272" height="686" alt="Screenshot 2026-10-29 at 9 06 02 AM" src="https://github.com/user-attachments/assets/6dc411ea-5c03-47ed-bb14-92fc61f81bab" />
+
+
+
+<img width="1278" height="710" alt="Screenshot 2026-10-29 at 9 05 47 AM" src="https://github.com/user-attachments/assets/9d7d2335-058e-467e-9c12-4f47109dc77f" />
+
+
+
+
 **Observation:** The lab identifies `onbegin` as the event handler that receives a `200` response, while the other tested event handlers receive `400` responses.
 
 This suggests that the `onbegin` attribute on the permitted SVG animation element is the promising combination to test.
@@ -136,7 +160,15 @@ The payload attempts to close the existing HTML attribute, introduce an SVG elem
 
 If the payload executes successfully, the browser displays an alert and the lab is solved.
 
-## 
+
+
+
+<img width="802" height="480" alt="Screenshot 2026-10-29 at 9 18 33 AM" src="https://github.com/user-attachments/assets/1bfc633a-86a4-4f4e-9b2a-3c58eece42fd" />
+
+
+<img width="1152" height="636" alt="Screenshot 2026-10-29 at 9 12 53 AM" src="https://github.com/user-attachments/assets/d15e1eca-171a-4fad-93ef-c3a64701cfe7" />
+
+
 
 ## 6. Why the Filter Is Bypassed
 
