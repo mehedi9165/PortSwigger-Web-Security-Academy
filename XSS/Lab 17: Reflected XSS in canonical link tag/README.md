@@ -95,6 +95,11 @@ The payload attempts to close the existing attribute and introduce two new attri
 - `accesskey`
 - `onclick`
 
+
+<img width="1151" height="640" alt="Screenshot 2026-11-04 at 2 21 02 PM" src="https://github.com/user-attachments/assets/42f4a6fd-1254-42c0-bc65-53b1cc8bb520" />
+
+
+
 ### Step 4: Trigger the keyboard shortcut
 
 The injected element has the access key `x`.
