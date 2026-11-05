@@ -55,6 +55,10 @@ test123
 
 Submit the search request.
 
+
+
+<img width="804" height="576" alt="Screenshot 2026-11-05 at 2 06 20 PM" src="https://github.com/user-attachments/assets/a93afef7-b2cb-41f8-ab82-80b14447318a" />
+
 ### Step 2: Intercept the request using Burp Suite
 
 1. Open Burp Suite.
@@ -102,6 +106,11 @@ The application escapes the single quote, producing something similar to:
 </script>
 ```
 
+
+
+
+<img width="948" height="692" alt="Screenshot 2026-11-05 at 2 09 44 PM" src="https://github.com/user-attachments/assets/48c0024d-b6b0-4cc1-a4fc-369066a3860c" />
+
 **Observation:** The single quote cannot directly terminate the JavaScript string.
 
 This confirms that the application has implemented some escaping, but it does not establish that the entire HTML and JavaScript context is safe.
@@ -131,6 +140,13 @@ After sending the request:
 5. Observe whether the alert appears.
 
 If the alert executes, the XSS vulnerability has been successfully demonstrated.
+
+
+<img width="1274" height="687" alt="Screenshot 2026-11-05 at 2 04 37 PM" src="https://github.com/user-attachments/assets/19d9d5ec-25df-467a-9f6e-99ae2184050b" />
+
+
+
+<img width="1155" height="637" alt="Screenshot 2026-11-05 at 2 24 47 PM" src="https://github.com/user-attachments/assets/fa77520c-03a3-470b-bcb7-ab3eba6d3b1d" />
 
 ## 5. Detailed Payload Breakdown
 
