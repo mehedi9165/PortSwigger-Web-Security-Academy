@@ -39,6 +39,10 @@ The resulting HTML is  similar to:
 </a>
 ```
 
+
+<img width="932" height="467" alt="Screenshot 2026-11-10 at 12 01 27 AM" src="https://github.com/user-attachments/assets/34cf52fb-772d-44f1-b230-16dc9f90b07a" />
+
+
 The application attempts to protect the input by encoding or escaping several special characters.
 
 However, the filtering mechanism does not correctly handle HTML character references in the context of the event-handler attribute.
@@ -121,6 +125,11 @@ The important part of this payload is:
 
 The `&apos;` character reference represents a single quote in HTML.
 
+
+
+<img width="1258" height="714" alt="Screenshot 2026-11-10 at 12 15 08 AM" src="https://github.com/user-attachments/assets/c0b49e14-9854-4d2e-9415-e34265298e5c" />
+
+
 When the browser parses the HTML attribute, the character reference is decoded into a quote character.
 
 This can change the structure of the JavaScript expression inside the event handler.
@@ -136,6 +145,16 @@ After submitting the comment:
 5. Select **Copy URL**.
 6. Open the copied URL in your browser.
 
+
+<img width="945" height="492" alt="Screenshot 2026-11-10 at 12 19 19 AM" src="https://github.com/user-attachments/assets/6491d4c6-a661-4e1b-8ade-df57e35e13a4" />
+
+<img width="947" height="604" alt="Screenshot 2026-11-10 at 12 19 08 AM" src="https://github.com/user-attachments/assets/c850f0ee-3e74-48b5-9f81-4b426892c9f6" />
+
+The inspector mode:
+
+<img width="933" height="433" alt="Screenshot 2026-11-10 at 12 03 01 AM" src="https://github.com/user-attachments/assets/d28d7caa-fdc9-4df8-8576-ebb2cd500d3a" />
+
+
 ### Step 6: Trigger the stored XSS
 
 Click the comment author's name.
@@ -147,6 +166,10 @@ alert(1)
 ```
 
 If the alert appears, the lab has been successfully solved.
+
+
+<img width="1279" height="645" alt="Screenshot 2026-11-10 at 12 02 15 AM" src="https://github.com/user-attachments/assets/d40b4efa-ddcd-4b58-b89d-d30111144269" />
+
 
 **Important:** Unlike reflected XSS, this payload is stored in the application's comment data. It executes when the affected comment is viewed and the author name is clicked.
 
